@@ -4,7 +4,9 @@ import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.Map;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vehicle {
@@ -26,10 +30,13 @@ public class Vehicle {
 
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private Map<String, String> feature = new HashMap<>();
+    private Map<String, Object> feature = new HashMap<>();
 
     @Column(name = "latitude", nullable = false)
     private BigDecimal latitude;
+
+    @Column(name = "number", nullable = false)
+    private String number;
 
     @Column(name = "longitude", nullable = false)
     private BigDecimal longitude;

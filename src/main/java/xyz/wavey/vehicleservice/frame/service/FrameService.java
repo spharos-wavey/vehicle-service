@@ -9,5 +9,5 @@ public interface FrameService {
 
   ResponseEntity<Object> addFrame(RequestFrame requestFrame);
 
-  ResponseFrame getFrame(@PathVariable Long id);
+  ResponseFrame getFrame(Long id);
 }

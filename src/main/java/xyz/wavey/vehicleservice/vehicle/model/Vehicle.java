@@ -11,6 +11,8 @@ import org.hibernate.annotations.Type;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import xyz.wavey.vehicleservice.baseTime.BaseTimeEntity;
+import xyz.wavey.vehicleservice.frame.model.Frame;
 
 @Entity
 @Builder
@@ -18,11 +20,15 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vehicle {
+public class Vehicle extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "frame_id")
+    private Frame frame;
 
     @Column(name = "color", nullable = false)
     private String color;

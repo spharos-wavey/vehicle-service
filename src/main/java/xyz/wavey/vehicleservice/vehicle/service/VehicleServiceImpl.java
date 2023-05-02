@@ -1,6 +1,5 @@
 package xyz.wavey.vehicleservice.vehicle.service;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
@@ -33,21 +32,21 @@ public class VehicleServiceImpl implements VehicleService{
     return ResponseEntity.status(HttpStatus.OK).body(vehicle);
   }
 
-//  @Override
-//  public ResponseVehicle getVehicleById(Long id) {
-//    Vehicle vehicle = vehicleRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
-//    return ResponseVehicle.builder()
-//        .color(vehicle.getColor())
-//        .feature(vehicle.getFeature())
-//        .number(vehicle.getNumber())
-//        .latitude(vehicle.getLatitude())
-//        .longitude(vehicle.getLongitude())
-//        .available(vehicle.getAvailable())
-//        .charge(vehicle.getCharge())
-//        .image(vehicle.getImage())
-//        .lastZone(vehicle.getLastZone())
-//        .smartKey(vehicle.getSmartKey())
-//        .build();
-//
-//  }
+  @Override
+  public ResponseVehicle getVehicleById(Long id) {
+    Vehicle vehicle = vehicleRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
+    return ResponseVehicle.builder()
+        .color(vehicle.getColor())
+        .feature(vehicle.getFeature())
+        .number(vehicle.getNumber())
+        .latitude(vehicle.getLatitude())
+        .longitude(vehicle.getLongitude())
+        .available(vehicle.getAvailable())
+        .charge(vehicle.getCharge())
+        .image(vehicle.getImage())
+        .lastZone(vehicle.getLastZone())
+        .smartKey(vehicle.getSmartKey())
+        .build();
+
+  }
 }

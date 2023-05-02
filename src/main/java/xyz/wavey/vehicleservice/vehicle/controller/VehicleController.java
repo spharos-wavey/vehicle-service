@@ -2,12 +2,15 @@ package xyz.wavey.vehicleservice.vehicle.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.vehicle.service.VehicleService;
 import xyz.wavey.vehicleservice.vehicle.vo.RequestVehicle;
+import xyz.wavey.vehicleservice.vehicle.vo.ResponseVehicle;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -21,9 +24,9 @@ public class VehicleController {
     return vehicleService.addVehicle(requestVehicle);
   }
 
-//  @GetMapping("/{id}")
-//  public ResponseVehicle getVehicle(@PathVariable Long id){
-//    return vehicleService.getVehicleById(id);
-//  }
+  @GetMapping("/{id}")
+  public ResponseVehicle getVehicle(@PathVariable Long id){
+    return vehicleService.getVehicleById(id);
+  }
 
 }

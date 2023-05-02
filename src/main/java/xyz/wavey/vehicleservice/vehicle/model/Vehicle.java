@@ -1,6 +1,6 @@
 package xyz.wavey.vehicleservice.vehicle.model;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.Type;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-
 
 @Entity
 @Builder

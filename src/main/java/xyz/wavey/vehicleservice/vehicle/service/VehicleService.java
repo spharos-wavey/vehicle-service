@@ -7,5 +7,5 @@ import xyz.wavey.vehicleservice.vehicle.vo.ResponseVehicle;
 public interface VehicleService {
   ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle);
 
-//  ResponseVehicle getVehicleById(Long id);
+  ResponseVehicle getVehicleById(Long id);
 }

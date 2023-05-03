@@ -2,6 +2,7 @@ package xyz.wavey.vehicleservice.vehicle.model;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,17 +34,18 @@ public class Vehicle extends BaseTimeEntity {
     @Column(name = "color", nullable = false)
     private String color;
 
+    //todo 아래의 타입 확인하기
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
     private Map<String, Object> feature = new HashMap<>();
 
-    @Column(name = "latitude", nullable = false)
+    @Column(name = "latitude", precision = 15, scale = 12, nullable = false)
     private BigDecimal latitude;
 
     @Column(name = "number", nullable = false)
     private String number;
 
-    @Column(name = "longitude", nullable = false)
+    @Column(name = "longitude", precision = 15, scale = 12, nullable = false)
     private BigDecimal longitude;
 
     @Column(name = "available", nullable = false)
@@ -61,4 +63,6 @@ public class Vehicle extends BaseTimeEntity {
     @Column(name = "last_zone", nullable = false)
     private Integer lastZone;
 
+    @Column(name = "wash_time", nullable = false)
+    private Date washTime;
 }

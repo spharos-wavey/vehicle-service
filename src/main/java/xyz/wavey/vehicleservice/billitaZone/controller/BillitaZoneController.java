@@ -2,12 +2,7 @@ package xyz.wavey.vehicleservice.billitaZone.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.billitaZone.service.BillitaZoneService;
 import xyz.wavey.vehicleservice.billitaZone.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.billitaZone.vo.ResponseBillitaZone;
@@ -27,4 +22,12 @@ public class BillitaZoneController {
   public ResponseBillitaZone getBillitaZone(@PathVariable Long id){
     return billitaZoneService.getBillitaZone(id);
   }
+
+    @GetMapping("/book-check")
+    public ResponseEntity<Object> vehicleTimeFilter(
+            @RequestParam("id") Long id,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate) {
+        return billitaZoneService.vehicleTimeFilter(id, startDate, endDate);
+    }
 }

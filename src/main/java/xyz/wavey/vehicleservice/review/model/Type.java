@@ -2,7 +2,6 @@ package xyz.wavey.vehicleservice.review.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor

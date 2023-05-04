@@ -1,7 +1,5 @@
 package xyz.wavey.vehicleservice.BookList.vo;
 
-import jakarta.ws.rs.GET;
-import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

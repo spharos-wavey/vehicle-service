@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import xyz.wavey.vehicleservice.billitaZone.model.BillitaZone;
 
 @Builder
 @AllArgsConstructor
@@ -24,10 +25,10 @@ public class ResponseVehicle {
   private Boolean available;
   private Integer charge;
   private String image;
-  private Integer lastZone;
+  private Long lastZone;
   private String smartKey;
   private Long frameId;
   private Date washTime;
-  private Map<String, Object> place;
+  private BillitaZone place;
 
 }

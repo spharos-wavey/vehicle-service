@@ -32,17 +32,22 @@ public class VehicleServiceImpl implements VehicleService{
             .charge(requestVehicle.getCharge())
             .image(requestVehicle.getImage())
             .lastZone(requestVehicle.getLastZone())
+            .washTime(requestVehicle.getWashTime())
         //todo  스마트키는 UUID로 진행될거같아서 수정요소가 보임 2023-05-03 신현채
+        //todo UUID넣어두기
             .smartKey(requestVehicle.getSmartKey())
             .frame(frameRepo.findById(requestVehicle.getFrameId()).get())
         .build());
-    return ResponseEntity.status(HttpStatus.OK).body(vehicle);
+    return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
   }
 
   @Override
   public ResponseVehicle getVehicleById(Long id) {
     Vehicle vehicle = vehicleRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
-//    BillitaZone billitaZone = billitaZoneRepo.findAllById()
+
+    BillitaZone billitaZone = billitaZoneRepo.findById(vehicle.getLastZone()).get();
+
+    //todo res빌리타존 추가해서 반환값 정하기
     return ResponseVehicle.builder()
         .color(vehicle.getColor())
         .feature(vehicle.getFeature())
@@ -56,8 +61,7 @@ public class VehicleServiceImpl implements VehicleService{
         .smartKey(vehicle.getSmartKey())
         .frameId(vehicle.getFrame().getId())
         .washTime(vehicle.getWashTime())
-//        .place(vehicle.find)
-
+        .place(billitaZone)
         .build();
 
   }

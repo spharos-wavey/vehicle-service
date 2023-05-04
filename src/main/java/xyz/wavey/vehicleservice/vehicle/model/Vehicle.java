@@ -61,7 +61,7 @@ public class Vehicle extends BaseTimeEntity {
     private String smartKey;
 
     @Column(name = "last_zone", nullable = false)
-    private Integer lastZone;
+    private Long lastZone;
 
     @Column(name = "wash_time", nullable = false)
     private Date washTime;

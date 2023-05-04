@@ -10,4 +10,5 @@ public interface BillitaZoneService {
 
   ResponseBillitaZone getBillitaZone(Long id);
 
+  ResponseEntity<Object> getAllBillitaZone();
 }

@@ -9,6 +9,10 @@ import xyz.wavey.vehicleservice.billitaZone.model.BillitaZone;
 import xyz.wavey.vehicleservice.billitaZone.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.billitaZone.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.billitaZone.vo.ResponseBillitaZone;
+import xyz.wavey.vehicleservice.billitaZone.vo.ResponseGetAllBillitaZone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,4 +38,20 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         .name(billitaZone.getName())
         .build();
   }
+
+    @Override
+    public ResponseEntity<Object> getAllBillitaZone() {
+        List<ResponseGetAllBillitaZone> returnValue = new ArrayList<>();
+        List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
+
+        for (BillitaZone billitaZone: billitaZoneList) {
+            returnValue.add(ResponseGetAllBillitaZone.builder()
+                    .id(billitaZone.getId())
+                    .name(billitaZone.getName())
+                    .latitude(billitaZone.getLatitude())
+                    .longitude(billitaZone.getLongitude())
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
 }

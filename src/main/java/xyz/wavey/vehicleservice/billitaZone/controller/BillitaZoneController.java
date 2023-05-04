@@ -23,8 +23,14 @@ public class BillitaZoneController {
     return billitaZoneService.addBillitaZone(requestBillitaZone);
   }
 
+    @GetMapping()
+    public ResponseEntity<Object> getAllBillitaZone() {
+        return billitaZoneService.getAllBillitaZone();
+    }
+
   @GetMapping("/{id}")
   public ResponseBillitaZone getBillitaZone(@PathVariable Long id){
     return billitaZoneService.getBillitaZone(id);
   }
+
 }

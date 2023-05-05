@@ -69,8 +69,6 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    }
-
     public ResponseEntity<Object> vehicleTimeFilter(Long billitaZoneId, String sDate, String eDate) {
         //todo 프론트와 얘기하여 날짜 받는 포맷 확정
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");

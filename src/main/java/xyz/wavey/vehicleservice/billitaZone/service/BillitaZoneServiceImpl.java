@@ -66,10 +66,21 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         // 해당 빌리타존에 있는 차량들을 모두 조회한다.
         List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZoneId);
-        for (Vehicle vehicle: vehiclesInBillitaZone) {
-            // 차량 id를 이용하여 해당 차량이 startDate, endDate 사이에 예약되어 있는지를 조회한다.
-            List<BookList> bookLists = bookListRepo.findAllByVehicleIdAndStartDateBetween(vehicle.getId(), startDate, endDate);
-            boolean canBook = bookLists.isEmpty();
+        for (Vehicle vehicle : vehiclesInBillitaZone) {
+            // 해당 차량의 모든 예약내용을 조회한다.
+            List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
+            boolean canBook = true;
+            for (BookList bookList : bookLists) {
+                // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
+                if (bookList.getStartDate().compareTo(endDate) > 0) {
+                    break;
+                }
+
+                if (bookList.getEndDate().compareTo(startDate) > 0 && endDate.compareTo(bookList.getStartDate()) > 0) {
+                    canBook = false;
+                    break;
+                }
+            }
             returnValue.add(ResponseTimeFilter.builder()
                     .vehicleId(vehicle.getId())
                     .canBook(canBook)

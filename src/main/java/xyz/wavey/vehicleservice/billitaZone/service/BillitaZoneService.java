@@ -10,5 +10,7 @@ public interface BillitaZoneService {
 
     ResponseBillitaZone getBillitaZone(Long id);
 
+  ResponseEntity<Object> getAllBillitaZone();
+
     ResponseEntity<Object> vehicleTimeFilter(Long billitaZoneId, String startDate, String endDate);
 }

@@ -12,6 +12,10 @@ import xyz.wavey.vehicleservice.billitaZone.model.BillitaZone;
 import xyz.wavey.vehicleservice.billitaZone.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.billitaZone.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.billitaZone.vo.ResponseBillitaZone;
+import xyz.wavey.vehicleservice.billitaZone.vo.ResponseGetAllBillitaZone;
+
+import java.util.ArrayList;
+
 import xyz.wavey.vehicleservice.vehicle.model.Vehicle;
 import xyz.wavey.vehicleservice.vehicle.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.billitaZone.vo.ResponseTimeFilter;
@@ -47,6 +51,24 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         .longitude(billitaZone.getLongitude())
         .name(billitaZone.getName())
         .build();
+  }
+
+    @Override
+    public ResponseEntity<Object> getAllBillitaZone() {
+        List<ResponseGetAllBillitaZone> returnValue = new ArrayList<>();
+        List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
+
+        for (BillitaZone billitaZone: billitaZoneList) {
+            returnValue.add(ResponseGetAllBillitaZone.builder()
+                    .id(billitaZone.getId())
+                    .name(billitaZone.getName())
+                    .latitude(billitaZone.getLatitude())
+                    .longitude(billitaZone.getLongitude())
+                    .build());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
     }
 
     public ResponseEntity<Object> vehicleTimeFilter(Long billitaZoneId, String sDate, String eDate) {

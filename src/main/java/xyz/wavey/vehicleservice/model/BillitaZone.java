@@ -23,7 +23,7 @@ import xyz.wavey.vehicleservice.base.BaseTimeEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class BillitaZone extends BaseTimeEntity {
+public class BillitaZone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

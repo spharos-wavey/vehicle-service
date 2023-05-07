@@ -19,7 +19,6 @@ public class RequestVehicle {
     private Integer charge;
     private String image;
     private Long lastZone;
-    private String smartKey;
     private Long frameId;
     private Date washTime;
 }

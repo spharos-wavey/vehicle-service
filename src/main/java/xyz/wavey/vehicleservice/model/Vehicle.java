@@ -60,7 +60,7 @@ public class Vehicle extends BaseTimeEntity {
     @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name = "smart_key", nullable = false)
+    @Column(name = "smart_key")
     private String smartKey;
 
     @Column(name = "last_zone", nullable = false)

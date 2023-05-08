@@ -1,4 +1,4 @@
-package xyz.wavey.vehicleservice.exception;
+package xyz.wavey.vehicleservice.base.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

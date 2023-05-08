@@ -9,4 +9,6 @@ public interface BookListService {
     ResponseEntity<Object> addBook(RequestBookList requestBookList);
 
     ResponseBookList getBook(Long id);
+
+    ResponseEntity<Object> deleteBook(Long id);
 }

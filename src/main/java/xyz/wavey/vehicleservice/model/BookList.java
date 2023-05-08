@@ -35,7 +35,7 @@ public class BookList extends BaseTimeEntity {
     @Column
     private Date endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn
     private Vehicle vehicle;
 

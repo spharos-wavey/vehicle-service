@@ -10,5 +10,5 @@ import xyz.wavey.vehicleservice.model.Vehicle;
 public class RequestBookList {
   private Date startDate;
   private Date endDate;
-  private Vehicle vehicle;
+  private Long vehicleId;
 }

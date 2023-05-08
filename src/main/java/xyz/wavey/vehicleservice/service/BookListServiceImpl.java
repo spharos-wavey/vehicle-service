@@ -35,14 +35,15 @@ public class BookListServiceImpl implements BookListService {
         return ResponseBookList.builder()
             .startDate(bookList.getStartDate())
             .endDate(bookList.getEndDate())
-                .vehicle(bookList.getVehicle())
+            .vehicle(bookList.getVehicle())
             .build();
     }
 
     @Override
-    public void deleteBook(Long id) {
+    public ResponseEntity<Object> deleteBook(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
         bookListRepo.delete(bookList);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

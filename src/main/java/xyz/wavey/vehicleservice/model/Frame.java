@@ -44,4 +44,10 @@ public class Frame extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer distancePrice;
+
+    @Column(nullable = false)
+    private String carType;
+
+    @Column(nullable = false)
+    private String appearance;
 }

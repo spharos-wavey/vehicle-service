@@ -26,6 +26,8 @@ public class FrameServiceImpl implements FrameService {
             .recommend(requestFrame.getRecommend())
             .defaultPrice(requestFrame.getDefaultPrice())
             .distancePrice(requestFrame.getDistancePrice())
+            .carType(requestFrame.getCarType())
+            .appearance(requestFrame.getAppearance())
             .build());
         return ResponseEntity.status(HttpStatus.OK).body(frame);
     }
@@ -41,6 +43,8 @@ public class FrameServiceImpl implements FrameService {
             .name(frame.getName())
             .defaultPrice(frame.getDefaultPrice())
             .distancePrice(frame.getDistancePrice())
+            .carType(frame.getCarType())
+            .appearance(frame.getAppearance())
             .build();
     }
 }

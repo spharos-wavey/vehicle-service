@@ -28,8 +28,9 @@ public class FrameServiceImpl implements FrameService {
             .distancePrice(requestFrame.getDistancePrice())
             .carType(requestFrame.getCarType())
             .appearance(requestFrame.getAppearance())
+            .manuel(requestFrame.getManuel())
             .build());
-        return ResponseEntity.status(HttpStatus.OK).body(frame);
+        return ResponseEntity.status(HttpStatus.CREATED).body(frame);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class FrameServiceImpl implements FrameService {
             .distancePrice(frame.getDistancePrice())
             .carType(frame.getCarType())
             .appearance(frame.getAppearance())
+            .manuel(frame.getManuel())
             .build();
     }
 }

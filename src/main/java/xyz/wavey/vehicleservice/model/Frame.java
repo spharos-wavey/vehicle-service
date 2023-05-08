@@ -24,24 +24,24 @@ public class Frame extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "maker", nullable = false)
+    @Column(nullable = false)
     private String maker;
 
-    @Column(name = "foreign_car", nullable = false)
+    @Column(nullable = false)
     private Boolean foreignCar;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "capacity", nullable = false)
+    @Column(nullable = false)
     private String capacity;
 
-    @Column(name = "recommend")
+    @Column
     private Boolean recommend;
 
-    @Column(name = "default_price", nullable = false)
+    @Column(nullable = false)
     private Integer defaultPrice;
 
-    @Column(name = "distance_price", nullable = false)
+    @Column(nullable = false)
     private Integer distancePrice;
 }

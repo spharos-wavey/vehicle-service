@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import xyz.wavey.vehicleservice.model.BillitaZone;
+import xyz.wavey.vehicleservice.model.Frame;
 
 @Builder
 @AllArgsConstructor
@@ -17,7 +18,7 @@ import xyz.wavey.vehicleservice.model.BillitaZone;
 @Getter
 @Setter
 
-public class ResponseVehicle {
+public class ResponseGetVehicle {
     private String color;
     private Map<String, Object> feature;
     private String number;
@@ -28,7 +29,7 @@ public class ResponseVehicle {
     private String image;
     private Long lastZone;
     private String smartKey;
-    private Long frameId;
+    private Frame frameInfo;
     private Date washTime;
     private BillitaZone place;
 

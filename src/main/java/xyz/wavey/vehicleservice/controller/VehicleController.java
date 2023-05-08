@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.service.VehicleService;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
-import xyz.wavey.vehicleservice.vo.ResponseVehicle;
+import xyz.wavey.vehicleservice.vo.ResponseGetVehicle;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -25,8 +25,8 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseVehicle getVehicle(@PathVariable Long id) {
-        return vehicleService.getVehicleById(id);
+    public ResponseGetVehicle getVehicle(@PathVariable Long id) {
+        return vehicleService.getVehicle(id);
     }
 
 }

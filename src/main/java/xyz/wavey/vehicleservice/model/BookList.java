@@ -29,16 +29,14 @@ public class BookList extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(name = "start_date")
+    @Column
     private Date startDate;
 
-
-    @Column(name = "end_date")
+    @Column
     private Date endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_id")
+    @JoinColumn
     private Vehicle vehicle;
 
 }

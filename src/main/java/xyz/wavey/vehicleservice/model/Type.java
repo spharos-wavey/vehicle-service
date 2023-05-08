@@ -10,5 +10,5 @@ public enum Type {
     REVIEW("리뷰"),
     INFORMATION("정보"),
     ;
-    private String message;
+    private final String message;
 }

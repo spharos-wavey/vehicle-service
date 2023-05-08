@@ -30,11 +30,11 @@ public class Vehicle extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "frame_id")
+    @ManyToOne
+    @JoinColumn
     private Frame frame;
 
-    @Column(name = "color", nullable = false)
+    @Column(nullable = false)
     private String color;
 
     //todo 아래의 타입 확인하기
@@ -42,30 +42,30 @@ public class Vehicle extends BaseTimeEntity {
     @Column(columnDefinition = "json")
     private Map<String, Object> feature = new HashMap<>();
 
-    @Column(name = "latitude", precision = 15, scale = 12, nullable = false)
+    @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "number", nullable = false)
+    @Column(nullable = false)
     private String number;
 
-    @Column(name = "longitude", precision = 15, scale = 12, nullable = false)
+    @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal longitude;
 
-    @Column(name = "available", nullable = false)
+    @Column(nullable = false)
     private Boolean available;
 
-    @Column(name = "charge", nullable = false)
+    @Column(nullable = false)
     private Integer charge;
 
-    @Column(name = "image", nullable = false)
+    @Column(nullable = false)
     private String image;
 
-    @Column(name = "smart_key")
+    @Column
     private String smartKey;
 
-    @Column(name = "last_zone", nullable = false)
+    @Column(nullable = false)
     private Long lastZone;
 
-    @Column(name = "wash_time", nullable = false)
+    @Column(nullable = false)
     private Date washTime;
 }

@@ -28,16 +28,16 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column
     private Type type;
 
-    @Column(name = "content")
+    @Column
     private String content;
 
-    @Column(name = "nick_name")
+    @Column
     private String nickName;
 
-    @Column(name = "profile")
+    @Column
     private String profile;
 
 }

@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import xyz.wavey.vehicleservice.base.BaseTimeEntity;
 
 @Entity
 @Builder
@@ -29,12 +28,12 @@ public class BillitaZone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "latitude", nullable = false)
+    @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal latitude;
 
-    @Column(name = "longitude", nullable = false)
+    @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal longitude;
 }

@@ -10,5 +10,5 @@ public interface BookListService {
 
     ResponseBookList getBook(Long id);
 
-    void deleteBook(Long id);
+    ResponseEntity<Object> deleteBook(Long id);
 }

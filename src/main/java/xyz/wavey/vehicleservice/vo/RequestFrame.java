@@ -13,4 +13,7 @@ public class RequestFrame {
    private Boolean recommend;
    private Integer defaultPrice;
    private Integer distancePrice;
+   private String carType;
+   private String appearance;
+
 }

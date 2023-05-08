@@ -22,4 +22,5 @@ public class ResponseFrame {
     private Integer distancePrice;
     private String carType;
     private String appearance;
+    private String manuel;
 }

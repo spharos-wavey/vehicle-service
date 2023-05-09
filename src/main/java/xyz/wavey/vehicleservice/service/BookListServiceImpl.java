@@ -23,7 +23,7 @@ public class BookListServiceImpl implements BookListService {
     @Override
     public ResponseEntity<Object> addBook(RequestBookList requestBookList) {
         Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
-                -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),NOT_FOUND_VEHICLE.getHttpStatus()));
+                -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(), NOT_FOUND_VEHICLE.getHttpStatus()));
         BookList bookList = bookListRepo.save(BookList.builder()
             .startDate(requestBookList.getStartDate())
             .endDate(requestBookList.getEndDate())
@@ -35,7 +35,7 @@ public class BookListServiceImpl implements BookListService {
     @Override
     public ResponseBookList getBook(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
-                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),NOT_FOUND_BOOKLIST.getHttpStatus()));
+                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(), NOT_FOUND_BOOKLIST.getHttpStatus()));
         return ResponseBookList.builder()
             .startDate(bookList.getStartDate())
             .endDate(bookList.getEndDate())
@@ -46,7 +46,7 @@ public class BookListServiceImpl implements BookListService {
     @Override
     public ResponseEntity<Object> deleteBook(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
-                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),NOT_FOUND_BOOKLIST.getHttpStatus()));
+                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(), NOT_FOUND_BOOKLIST.getHttpStatus()));
         bookListRepo.delete(bookList);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

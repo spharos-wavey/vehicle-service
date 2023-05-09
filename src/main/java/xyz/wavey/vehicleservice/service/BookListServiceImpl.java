@@ -1,7 +1,6 @@
 package xyz.wavey.vehicleservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,9 @@ import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
 import xyz.wavey.vehicleservice.vo.ResponseBookList;
+import xyz.wavey.vehicleservice.base.exception.ServiceException;
+
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,8 @@ public class BookListServiceImpl implements BookListService {
 
     @Override
     public ResponseEntity<Object> addBook(RequestBookList requestBookList) {
-        Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(() -> new ServiceException("error"));
+        Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
+                -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(), NOT_FOUND_VEHICLE.getHttpStatus()));
         BookList bookList = bookListRepo.save(BookList.builder()
             .startDate(requestBookList.getStartDate())
             .endDate(requestBookList.getEndDate())
@@ -31,7 +34,8 @@ public class BookListServiceImpl implements BookListService {
 
     @Override
     public ResponseBookList getBook(Long id) {
-        BookList bookList = bookListRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
+        BookList bookList = bookListRepo.findById(id).orElseThrow(()
+                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(), NOT_FOUND_BOOKLIST.getHttpStatus()));
         return ResponseBookList.builder()
             .startDate(bookList.getStartDate())
             .endDate(bookList.getEndDate())
@@ -41,7 +45,8 @@ public class BookListServiceImpl implements BookListService {
 
     @Override
     public ResponseEntity<Object> deleteBook(Long id) {
-        BookList bookList = bookListRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
+        BookList bookList = bookListRepo.findById(id).orElseThrow(()
+                -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(), NOT_FOUND_BOOKLIST.getHttpStatus()));
         bookListRepo.delete(bookList);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

@@ -1,5 +1,6 @@
 package xyz.wavey.vehicleservice.vo;
 
+import jakarta.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
@@ -21,4 +22,5 @@ public class RequestVehicle {
     private Long lastZone;
     private Long frameId;
     private Date washTime;
+    private Integer mileage;
 }

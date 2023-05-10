@@ -32,5 +32,6 @@ public class ResponseGetVehicle {
     private Frame frameInfo;
     private Date washTime;
     private BillitaZone place;
+    private Integer mileage;
 
 }

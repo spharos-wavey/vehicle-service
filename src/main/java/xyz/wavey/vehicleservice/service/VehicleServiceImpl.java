@@ -38,6 +38,7 @@ public class VehicleServiceImpl implements VehicleService {
             .washTime(requestVehicle.getWashTime())
             .smartKey(UUID.randomUUID().toString())
             .frame(frameRepo.findById(requestVehicle.getFrameId()).get())
+            .mileage(requestVehicle.getMileage())
             .build());
         return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
     }
@@ -63,6 +64,7 @@ public class VehicleServiceImpl implements VehicleService {
             .frameInfo(vehicle.getFrame())
             .washTime(vehicle.getWashTime())
             .place(billitaZone)
+            .mileage(vehicle.getMileage())
             .build();
 
     }

@@ -68,4 +68,7 @@ public class Vehicle extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Date washTime;
+
+    @Column(nullable = false)
+    private Integer mileage;
 }

@@ -21,4 +21,5 @@ public class RequestVehicle {
     private Long lastZone;
     private Long frameId;
     private Date washTime;
+    private Integer mileage;
 }

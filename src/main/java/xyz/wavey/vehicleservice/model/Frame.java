@@ -36,7 +36,7 @@ public class Frame extends BaseTimeEntity {
     @Column(nullable = false)
     private String capacity;
 
-    @Column
+    @Column(nullable = false)
     private Boolean recommend;
 
     @Column(nullable = false)

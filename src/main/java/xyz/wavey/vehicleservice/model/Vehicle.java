@@ -34,9 +34,6 @@ public class Vehicle extends BaseTimeEntity {
     @JoinColumn
     private Frame frame;
 
-    @Column(nullable = false)
-    private String color;
-
     //todo 아래의 타입 확인하기
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
@@ -56,9 +53,6 @@ public class Vehicle extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer charge;
-
-    @Column(nullable = false)
-    private String image;
 
     @Column
     private String smartKey;

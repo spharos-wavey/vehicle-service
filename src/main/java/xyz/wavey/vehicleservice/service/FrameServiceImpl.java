@@ -29,6 +29,8 @@ public class FrameServiceImpl implements FrameService {
             .carType(requestFrame.getCarType())
             .appearance(requestFrame.getAppearance())
             .manuel(requestFrame.getManuel())
+            .color(requestFrame.getColor())
+            .image(requestFrame.getImage())
             .build());
         return ResponseEntity.status(HttpStatus.CREATED).body(frame);
     }
@@ -47,6 +49,8 @@ public class FrameServiceImpl implements FrameService {
             .carType(frame.getCarType())
             .appearance(frame.getAppearance())
             .manuel(frame.getManuel())
+            .color(frame.getColor())
+            .image(frame.getImage())
             .build();
     }
 }

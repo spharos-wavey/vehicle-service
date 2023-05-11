@@ -53,4 +53,10 @@ public class Frame extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String manuel;
+
+    @Column(nullable = false)
+    private String color;
+
+    @Column(nullable = false)
+    private String image;
 }

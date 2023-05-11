@@ -26,14 +26,12 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle) {
         Vehicle vehicle = vehicleRepo.save(Vehicle.builder()
-            .color(requestVehicle.getColor())
             .feature(requestVehicle.getFeature())
             .number(requestVehicle.getNumber())
             .latitude(requestVehicle.getLatitude())
             .longitude(requestVehicle.getLongitude())
             .available(requestVehicle.getAvailable())
             .charge(requestVehicle.getCharge())
-            .image(requestVehicle.getImage())
             .lastZone(requestVehicle.getLastZone())
             .washTime(requestVehicle.getWashTime())
             .smartKey(UUID.randomUUID().toString())
@@ -51,14 +49,12 @@ public class VehicleServiceImpl implements VehicleService {
         BillitaZone billitaZone = billitaZoneRepo.findById(vehicle.getLastZone()).get();
 
         return ResponseGetVehicle.builder()
-            .color(vehicle.getColor())
             .feature(vehicle.getFeature())
             .number(vehicle.getNumber())
             .latitude(vehicle.getLatitude())
             .longitude(vehicle.getLongitude())
             .available(vehicle.getAvailable())
             .charge(vehicle.getCharge())
-            .image(vehicle.getImage())
             .lastZone(vehicle.getLastZone())
             .smartKey(vehicle.getSmartKey())
             .frameInfo(vehicle.getFrame())

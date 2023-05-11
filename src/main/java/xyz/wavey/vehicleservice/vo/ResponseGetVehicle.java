@@ -19,19 +19,18 @@ import xyz.wavey.vehicleservice.model.Frame;
 @Setter
 
 public class ResponseGetVehicle {
-    private String color;
+
     private Map<String, Object> feature;
+    private BillitaZone place;
+    private Frame frameInfo;
     private String number;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
-    private String image;
     private Long lastZone;
     private String smartKey;
-    private Frame frameInfo;
     private Date washTime;
-    private BillitaZone place;
     private Integer mileage;
 
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
 @Builder
@@ -23,4 +24,6 @@ public class ResponseFrame {
     private String carType;
     private String appearance;
     private String manuel;
+    private String color;
+    private String image;
 }

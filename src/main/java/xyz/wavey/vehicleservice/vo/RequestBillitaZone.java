@@ -13,4 +13,6 @@ public class RequestBillitaZone {
   private BigDecimal longitude;
 
   private String name;
+
+  private String zoneAddress;
 }

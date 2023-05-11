@@ -36,4 +36,7 @@ public class BillitaZone {
 
     @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal longitude;
+
+    @Column(nullable = false)
+    private String zoneAddress;
 }

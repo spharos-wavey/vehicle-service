@@ -18,4 +18,6 @@ public class ResponseBillitaZone {
   private BigDecimal longitude;
 
   private String name;
+
+  private String zoneAddress;
 }

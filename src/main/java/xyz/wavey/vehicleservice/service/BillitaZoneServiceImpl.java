@@ -39,6 +39,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             .name(requestBillitaZone.getName())
             .latitude(requestBillitaZone.getLatitude())
             .longitude(requestBillitaZone.getLongitude())
+            .zoneAddress(requestBillitaZone.getZoneAddress())
             .build());
         return ResponseEntity.status(HttpStatus.OK).body(billitaZone);
     }
@@ -49,6 +50,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             .latitude(billitaZone.getLatitude())
             .longitude(billitaZone.getLongitude())
             .name(billitaZone.getName())
+            .zoneAddress(billitaZone.getZoneAddress())
             .build();
     }
 

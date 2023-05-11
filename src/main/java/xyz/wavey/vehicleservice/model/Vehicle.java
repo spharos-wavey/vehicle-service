@@ -54,7 +54,7 @@ public class Vehicle extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer charge;
 
-    @Column
+    @Column(nullable = false)
     private String smartKey;
 
     @Column(nullable = false)

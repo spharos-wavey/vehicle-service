@@ -28,12 +28,12 @@ public class BillitaZoneController {
         return billitaZoneService.getBillitaZone(id);
     }
 
-
-    @GetMapping("/book-check")
+    @GetMapping("/filter")
     public ResponseEntity<Object> vehicleTimeFilter(
-            @RequestParam("id") Long id,
-            @RequestParam("startDate") String startDate,
-            @RequestParam("endDate") String endDate) {
-        return billitaZoneService.vehicleTimeFilter(id, startDate, endDate);
+            @RequestParam("sDate") String startDate,
+            @RequestParam("eDate") String endDate,
+            @RequestParam("lat") String lat,
+            @RequestParam("lng") String lng) {
+        return billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat), Double.parseDouble(lng));
     }
 }

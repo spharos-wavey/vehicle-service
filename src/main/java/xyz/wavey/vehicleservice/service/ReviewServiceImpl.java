@@ -1,7 +1,6 @@
 package xyz.wavey.vehicleservice.service;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_REVIEW;
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_Review;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICLE;
 
 import lombok.RequiredArgsConstructor;

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BookListService;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
+import xyz.wavey.vehicleservice.vo.ResponseBookAboutVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseBookList;
 
 @RestController
@@ -26,6 +27,11 @@ public class BookListController {
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id){
         bookListService.deleteBook(id);
+    }
+
+    @GetMapping("/information/{id}")
+    public ResponseBookAboutVehicle getBookAboutVehicle(@PathVariable Long id){
+        return bookListService.getBookAboutVehicle(id);
     }
 
 }

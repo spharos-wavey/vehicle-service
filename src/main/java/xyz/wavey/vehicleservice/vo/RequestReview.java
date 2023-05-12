@@ -11,4 +11,5 @@ public class RequestReview {
   private String content;
   private String nickName;
   private String profile;
+  private Long vehicleId;
 }

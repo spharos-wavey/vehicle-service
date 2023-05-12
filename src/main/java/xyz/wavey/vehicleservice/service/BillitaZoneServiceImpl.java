@@ -48,11 +48,8 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
     public ResponseBillitaZone getBillitaZone(Long id) {
         BillitaZone billitaZone = billitaZoneRepo.findById(id)
-                .orElseThrow(() -> new ServiceException(
-                        NOT_FOUND_BILLITAZONE.getMessage(),
-                        NOT_FOUND_BILLITAZONE.getHttpStatus())
-                );
-
+            .orElseThrow(() -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
+                NOT_FOUND_BILLITAZONE.getHttpStatus()));
         return ResponseBillitaZone.builder()
             .latitude(billitaZone.getLatitude())
             .longitude(billitaZone.getLongitude())

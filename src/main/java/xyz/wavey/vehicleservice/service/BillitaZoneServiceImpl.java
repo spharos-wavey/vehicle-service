@@ -1,11 +1,13 @@
 package xyz.wavey.vehicleservice.service;
 
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_BILLITAZONE;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
@@ -44,7 +46,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     public ResponseBillitaZone getBillitaZone(Long id) {
-        BillitaZone billitaZone = billitaZoneRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
+        BillitaZone billitaZone = billitaZoneRepo.findById(id)
+            .orElseThrow(() -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
+                NOT_FOUND_BILLITAZONE.getHttpStatus()));
         return ResponseBillitaZone.builder()
             .latitude(billitaZone.getLatitude())
             .longitude(billitaZone.getLongitude())

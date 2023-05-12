@@ -1,10 +1,13 @@
 package xyz.wavey.vehicleservice.service;
 
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_FRAME;
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICLE;
+
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.vo.RequestFrame;
@@ -37,7 +40,9 @@ public class FrameServiceImpl implements FrameService {
 
     @Override
     public ResponseFrame getFrame(Long id) {
-        Frame frame = frameRepo.findById(id).orElseThrow(() -> new ServiceException("error"));
+        Frame frame = frameRepo.findById(id).orElseThrow(()
+            -> new ServiceException(NOT_FOUND_FRAME.getMessage(),
+            NOT_FOUND_FRAME.getHttpStatus()));
         return ResponseFrame.builder()
             .maker(frame.getMaker())
             .recommend(frame.getRecommend())

@@ -28,4 +28,9 @@ public class BookListController {
         bookListService.deleteBook(id);
     }
 
+    @GetMapping("/information/{id}")
+    public ResponseEntity<Object> getBookAboutVehicle(@PathVariable Long id){
+        return bookListService.getBookAboutVehicle(id);
+    }
+
 }

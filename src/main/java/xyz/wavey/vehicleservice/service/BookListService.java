@@ -11,4 +11,6 @@ public interface BookListService {
     ResponseBookList getBook(Long id);
 
     ResponseEntity<Object> deleteBook(Long id);
+
+    ResponseEntity<Object> getBookAboutVehicle(Long id);
 }

@@ -2,7 +2,6 @@ package xyz.wavey.vehicleservice.service;
 
 import org.springframework.http.ResponseEntity;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
-import xyz.wavey.vehicleservice.vo.ResponseBookAboutVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseBookList;
 
 public interface BookListService {
@@ -13,5 +12,5 @@ public interface BookListService {
 
     ResponseEntity<Object> deleteBook(Long id);
 
-    ResponseBookAboutVehicle getBookAboutVehicle(Long id);
+    ResponseEntity<Object> getBookAboutVehicle(Long id);
 }

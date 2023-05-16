@@ -57,17 +57,17 @@ public class BookListServiceImpl implements BookListService {
     }
 
     @Override
-    public ResponseBookAboutVehicle getBookAboutVehicle(Long id) {
+    public ResponseEntity<Object> getBookAboutVehicle(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
             NOT_FOUND_BOOKLIST.getHttpStatus()));
-        return ResponseBookAboutVehicle.builder()
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseBookAboutVehicle.builder()
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .capacity(bookList.getVehicle().getFrame().getCapacity())
             .name(bookList.getVehicle().getFrame().getName())
             .maker(bookList.getVehicle().getFrame().getMaker())
             .charge(bookList.getVehicle().getCharge())
-            .build();
+            .build());
     }
 }

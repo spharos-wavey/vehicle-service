@@ -30,7 +30,7 @@ public class FrameServiceImpl implements FrameService {
             .distancePrice(requestFrame.getDistancePrice())
             .carType(requestFrame.getCarType())
             .appearance(requestFrame.getAppearance())
-            .manuel(requestFrame.getManuel())
+            .manual(requestFrame.getManual())
             .color(requestFrame.getColor())
             .image(requestFrame.getImage())
             .build());
@@ -52,7 +52,7 @@ public class FrameServiceImpl implements FrameService {
             .distancePrice(frame.getDistancePrice())
             .carType(frame.getCarType())
             .appearance(frame.getAppearance())
-            .manuel(frame.getManuel())
+            .manual(frame.getManual())
             .color(frame.getColor())
             .image(frame.getImage())
             .build();

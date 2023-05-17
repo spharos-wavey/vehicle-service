@@ -16,7 +16,7 @@ public class RequestFrame {
     private Integer distancePrice;
     private String carType;
     private String appearance;
-    private String manuel;
+    private String manual;
     private String color;
     private String image;
 }

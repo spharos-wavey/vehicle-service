@@ -4,6 +4,7 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_BILLIT
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_FRAME;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICLE;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,12 @@ import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.model.Vehicle;
+import xyz.wavey.vehicleservice.repository.ReviewRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseGetVehicle;
 import java.util.UUID;
+import xyz.wavey.vehicleservice.vo.ReviewInfoMapping;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepo vehicleRepo;
     private final FrameRepo frameRepo;
     private final BillitaZoneRepo billitaZoneRepo;
+    private final ReviewRepo reviewRepo;
 
     @Override
     public ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle) {
@@ -53,8 +57,10 @@ public class VehicleServiceImpl implements VehicleService {
                 NOT_FOUND_VEHICLE.getHttpStatus()));
 
         BillitaZone billitaZone = billitaZoneRepo.findById(vehicle.getLastZone()).orElseThrow(
-            () -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
+            () -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
                 NOT_FOUND_BILLITAZONE.getHttpStatus()));
+
+        List<ReviewInfoMapping> reviewList = reviewRepo.findAllByVehicleId(id);
 
         return ResponseGetVehicle.builder()
             .feature(vehicle.getFeature())
@@ -69,6 +75,7 @@ public class VehicleServiceImpl implements VehicleService {
             .washTime(vehicle.getWashTime())
             .place(billitaZone)
             .mileage(vehicle.getMileage())
+            .review(reviewList)
             .build();
 
     }

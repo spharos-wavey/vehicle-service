@@ -2,6 +2,7 @@ package xyz.wavey.vehicleservice.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -32,5 +33,6 @@ public class ResponseGetVehicle {
     private String smartKey;
     private Date washTime;
     private Integer mileage;
+    private List<ReviewInfoMapping> review;
 
 }

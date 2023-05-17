@@ -44,7 +44,7 @@ public class QFrame extends EntityPathBase<Frame> {
 
     public final StringPath maker = createString("maker");
 
-    public final StringPath manuel = createString("manuel");
+    public final StringPath manual = createString("manual");
 
     public final StringPath name = createString("name");
 

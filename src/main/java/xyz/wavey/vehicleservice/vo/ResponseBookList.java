@@ -1,5 +1,6 @@
 package xyz.wavey.vehicleservice.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import xyz.wavey.vehicleservice.model.Vehicle;
 
 public class ResponseBookList {
 
-  private Date startDate;
-  private Date endDate;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
   private Vehicle vehicle;
 }

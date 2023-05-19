@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -29,10 +30,10 @@ public class BookList extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn

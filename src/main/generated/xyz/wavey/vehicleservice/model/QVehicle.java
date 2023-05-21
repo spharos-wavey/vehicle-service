@@ -52,7 +52,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDate = _super.updateDate;
 
-    public final DateTimePath<java.util.Date> washTime = createDateTime("washTime", java.util.Date.class);
+    public final DateTimePath<java.time.LocalDateTime> washTime = createDateTime("washTime", java.time.LocalDateTime.class);
 
     public QVehicle(String variable) {
         this(Vehicle.class, forVariable(variable), INITS);

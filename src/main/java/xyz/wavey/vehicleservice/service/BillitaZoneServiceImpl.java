@@ -14,15 +14,14 @@ import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
@@ -79,14 +78,14 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        Date startDate;
-        Date endDate;
+        LocalDateTime startDate;
+        LocalDateTime endDate;
         try {
-            startDate = formatter.parse(sDate);
-            endDate = formatter.parse(eDate);
-        } catch (ParseException e) {
+            startDate = LocalDateTime.parse(sDate, dateTimeFormatter);
+            endDate = LocalDateTime.parse(eDate, dateTimeFormatter);
+        } catch (Exception e) {
             throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
@@ -99,11 +98,11 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 boolean canBook = true;
                 for (BookList bookList : bookLists) {
                     // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
-                    if (bookList.getStartDate().compareTo(endDate) > 0) {
+                    if (bookList.getStartDate().isAfter(endDate)) {
                         break;
                     }
 
-                    if (bookList.getEndDate().compareTo(startDate) > 0 && endDate.compareTo(bookList.getStartDate()) > 0) {
+                    if (bookList.getEndDate().isAfter(startDate) && endDate.isAfter(bookList.getStartDate())) {
                         canBook = false;
                         break;
                     }

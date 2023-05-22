@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
+import xyz.wavey.vehicleservice.vo.ResponseGetNowBillita;
 
 import java.util.List;
 
@@ -20,5 +21,7 @@ public interface BillitaZoneService {
 
     // 현재 사용자의 위경도가 주어졌을 때 반경 10km 이내의 빌리타존을 조회하는 서비스
     List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng);
+
+    List<ResponseGetNowBillita> getNowBillita(double lat, double lng);
 
 }

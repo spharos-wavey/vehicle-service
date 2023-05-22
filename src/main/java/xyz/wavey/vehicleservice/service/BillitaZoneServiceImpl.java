@@ -9,14 +9,13 @@ import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
-import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
+import xyz.wavey.vehicleservice.vo.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
-import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
+
 import java.util.List;
 import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.model.BookList;
@@ -143,6 +142,24 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         }
 
         return returnValue;
+    }
+
+    @Override
+    public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
+        List<BillitaZone> billitaZoneList = billitaZoneInLimitDistance(lat,lng);
+        List<ResponseGetNowBillita> getNowBillita = new ArrayList<>();
+        for (BillitaZone billitaZone : billitaZoneList) {
+            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
+            for (Vehicle vehicle : vehiclesInBillitaZone) {
+                getNowBillita.add(ResponseGetNowBillita.builder()
+                        .vehicleId(vehicle.getId())
+                        .vehicleLastZone(vehicle.getLastZone())
+                        .build());
+            }
+            log.info(getNowBillita.toString());
+        }
+
+        return null;
     }
 
 }

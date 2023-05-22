@@ -72,7 +72,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
 
     public QVehicle(Class<? extends Vehicle> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.frame = inits.isInitialized("frame") ? new QFrame(forProperty("frame")) : null;
+        this.frame = inits.isInitialized("frame") ? new QFrame(forProperty("frame"), inits.get("frame")) : null;
     }
 
 }

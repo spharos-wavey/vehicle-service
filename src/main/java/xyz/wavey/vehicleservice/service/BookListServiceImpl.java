@@ -66,7 +66,7 @@ public class BookListServiceImpl implements BookListService {
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .capacity(bookList.getVehicle().getFrame().getCapacity())
             .name(bookList.getVehicle().getFrame().getName())
-            .maker(bookList.getVehicle().getFrame().getMaker())
+            .maker(bookList.getVehicle().getFrame().getMaker().getName())
             .charge(bookList.getVehicle().getCharge())
             .build());
     }

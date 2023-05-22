@@ -7,8 +7,7 @@ import lombok.Setter;
 @Setter
 public class RequestFrame {
 
-    private String maker;
-    private Boolean foreignCar;
+    private Integer makerId;
     private String name;
     private String capacity;
     private Boolean recommend;

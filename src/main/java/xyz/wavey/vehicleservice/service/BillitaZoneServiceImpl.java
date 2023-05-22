@@ -146,20 +146,27 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
     @Override
     public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
-        List<BillitaZone> billitaZoneList = billitaZoneInLimitDistance(lat,lng);
-        List<ResponseGetNowBillita> getNowBillita = new ArrayList<>();
-        for (BillitaZone billitaZone : billitaZoneList) {
+        List<ResponseGetNowBillita> returnValue = new ArrayList<>();
+
+        // todo 반환되는 자동차 선정 기준 필요 - 2023/05/22 - 김지욱
+        // 주어진 위경도로부터 반경 10km 이내에 있는 모든 빌리타존 내의 차량을 그대로 반환하는데 모든 값을 반환하는 것은 비효율적인것 같음
+        // 데이터 생성할 때 분산해서 빌리타존별로 차량을 최대 5개만 넣는 식으로 해결해야할 듯
+        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat,lng)) {
             List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
             for (Vehicle vehicle : vehiclesInBillitaZone) {
-                getNowBillita.add(ResponseGetNowBillita.builder()
+                returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
-                        .vehicleLastZone(vehicle.getLastZone())
+                        .billitaZoneId(vehicle.getLastZone())
+                        .billitaZoneName(billitaZoneRepo.findById(vehicle.getLastZone()).get().getName())
+                        .carBrand(vehicle.getFrame().getMaker().getName())
+                        .carName(vehicle.getFrame().getName())
+                        .frameImage(vehicle.getFrame().getImage())
                         .build());
             }
-            log.info(getNowBillita.toString());
+            log.info(returnValue.toString());
         }
 
-        return null;
+        return returnValue;
     }
 
 }

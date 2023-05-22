@@ -14,4 +14,6 @@ public interface MakerService {
     ResponseMaker getMaker(Integer id);
     List<ResponseGetAllMakers> getAllBrands();
 
+    ResponseEntity<Object> getAllVehicleByMaker(Integer id);
+
 }

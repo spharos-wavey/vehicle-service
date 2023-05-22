@@ -36,4 +36,9 @@ public class MakerController {
                 .status(HttpStatus.OK)
                 .body(makerService.getAllBrands());
     }
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<Object> getAllVehicleByMaker(@PathVariable Integer id){
+        return makerService.getAllVehicleByMaker(id);
+    }
 }

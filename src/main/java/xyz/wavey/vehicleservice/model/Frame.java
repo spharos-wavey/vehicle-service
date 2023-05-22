@@ -1,10 +1,6 @@
 package xyz.wavey.vehicleservice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,11 +20,8 @@ public class Frame extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String maker;
-
-    @Column(nullable = false)
-    private Boolean foreignCar;
+    @ManyToOne
+    private Maker maker;
 
     @Column(nullable = false)
     private String name;

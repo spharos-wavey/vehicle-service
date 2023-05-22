@@ -1,6 +1,7 @@
 package xyz.wavey.vehicleservice.service;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_FRAME;
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
+import xyz.wavey.vehicleservice.repository.MakerRepo;
 import xyz.wavey.vehicleservice.vo.RequestFrame;
 import xyz.wavey.vehicleservice.vo.ResponseFrame;
 
@@ -17,12 +19,13 @@ import xyz.wavey.vehicleservice.vo.ResponseFrame;
 public class FrameServiceImpl implements FrameService {
 
     private final FrameRepo frameRepo;
+    private final MakerRepo makerRepo;
 
     @Override
     public ResponseEntity<Object> addFrame(RequestFrame requestFrame) {
         Frame frame = frameRepo.save(Frame.builder()
-            .maker(requestFrame.getMaker())
-            .foreignCar(requestFrame.getForeignCar())
+            .maker(makerRepo.findById(requestFrame.getMakerId()).orElseThrow(() ->
+                    new ServiceException(NOT_FOUND_MAKER.getMessage(), NOT_FOUND_MAKER.getHttpStatus())))
             .name(requestFrame.getName())
             .capacity(requestFrame.getCapacity())
             .recommend(requestFrame.getRecommend())
@@ -43,10 +46,10 @@ public class FrameServiceImpl implements FrameService {
             -> new ServiceException(NOT_FOUND_FRAME.getMessage(),
             NOT_FOUND_FRAME.getHttpStatus()));
         return ResponseFrame.builder()
-            .maker(frame.getMaker())
+            .maker(frame.getMaker().getName())
             .recommend(frame.getRecommend())
             .capacity(frame.getCapacity())
-            .foreignCar(frame.getForeignCar())
+            .foreignCar(frame.getMaker().getForeignCar())
             .name(frame.getName())
             .defaultPrice(frame.getDefaultPrice())
             .distancePrice(frame.getDistancePrice())

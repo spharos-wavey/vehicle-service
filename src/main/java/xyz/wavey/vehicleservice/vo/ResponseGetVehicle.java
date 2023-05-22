@@ -1,7 +1,7 @@
 package xyz.wavey.vehicleservice.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class ResponseGetVehicle {
     private Integer charge;
     private Long lastZone;
     private String smartKey;
-    private Date washTime;
+    private LocalDateTime washTime;
     private Integer mileage;
     private List<ReviewInfoMapping> review;
 

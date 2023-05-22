@@ -12,10 +12,12 @@ import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
+import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
 import java.util.List;
-
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 @Service
@@ -65,56 +67,56 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
+    @Override
+    public ResponseEntity<Object> timeFilter(String sDate, String eDate, double lat, double lng) {
 
-//    @Override
-//    public ResponseEntity<Object> timeFilter(String sDate, String eDate, double lat, double lng) {
-//
-//        List<ResponseTimeFilter> returnValue = new ArrayList<>();
-//
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//
-//        Date startDate;
-//        Date endDate;
-//        try {
-//            startDate = formatter.parse(sDate);
-//            endDate = formatter.parse(eDate);
-//        } catch (ParseException e) {
-//            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
-//        }
-//
-//        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
-//            int rentAbleAmount = 0;
-//            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
-//            for (Vehicle vehicle : vehiclesInBillitaZone) {
-//                // 해당 차량의 모든 예약내용을 조회한다.
-//                List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
-//                boolean canBook = true;
-//                for (BookList bookList : bookLists) {
-//                    // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
-//                    if (bookList.getStartDate().compareTo(endDate) > 0) {
-//                        break;
-//                    }
-//
-//                    if (bookList.getEndDate().compareTo(startDate) > 0 && endDate.compareTo(bookList.getStartDate()) > 0) {
-//                        canBook = false;
-//                        break;
-//                    }
-//                }
-//                if (canBook) {
-//                    rentAbleAmount++;
-//                }
-//            }
-//
-//            returnValue.add(ResponseTimeFilter.builder()
-//                    .billitaZoneId(billitaZone.getId())
-//                    .billitaZoneLat(billitaZone.getLatitude().doubleValue())
-//                    .billitaZoneLng(billitaZone.getLongitude().doubleValue())
-//                    .rentAbleAmount(rentAbleAmount)
-//                    .build());
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
-//    }
+        List<ResponseTimeFilter> returnValue = new ArrayList<>();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            startDate = LocalDateTime.parse(sDate, dateTimeFormatter);
+            endDate = LocalDateTime.parse(eDate, dateTimeFormatter);
+        } catch (Exception e) {
+            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
+        }
+
+        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
+            int rentAbleAmount = 0;
+            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
+            for (Vehicle vehicle : vehiclesInBillitaZone) {
+                // 해당 차량의 모든 예약내용을 조회한다.
+                List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
+                boolean canBook = true;
+                for (BookList bookList : bookLists) {
+                    // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
+                    if (bookList.getStartDate().isAfter(endDate)) {
+                        break;
+                    }
+
+                    if (bookList.getEndDate().isAfter(startDate) && endDate.isAfter(bookList.getStartDate())) {
+                        canBook = false;
+                        break;
+                    }
+                }
+                if (canBook) {
+                    rentAbleAmount++;
+                }
+            }
+
+            returnValue.add(ResponseTimeFilter.builder()
+                    .billitaZoneId(billitaZone.getId())
+                    .billitaZoneLat(billitaZone.getLatitude().doubleValue())
+                    .billitaZoneLng(billitaZone.getLongitude().doubleValue())
+                    .rentAbleAmount(rentAbleAmount)
+                    .build());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
 
     @Override
     public List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng) {

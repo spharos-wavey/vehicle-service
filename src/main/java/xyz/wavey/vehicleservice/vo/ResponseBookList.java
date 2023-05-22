@@ -13,10 +13,10 @@ import xyz.wavey.vehicleservice.model.Vehicle;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class ResponseBookList {
 
   private LocalDateTime startDate;
   private LocalDateTime endDate;
   private Vehicle vehicle;
+
 }

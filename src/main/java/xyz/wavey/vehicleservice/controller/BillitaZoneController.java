@@ -1,6 +1,7 @@
 package xyz.wavey.vehicleservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BillitaZoneService;
@@ -36,4 +37,14 @@ public class BillitaZoneController {
             @RequestParam("lng") String lng) {
         return billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat), Double.parseDouble(lng));
     }
+
+    @GetMapping("/now")
+    public ResponseEntity<Object> getNowBillita(
+            @RequestParam("lat") String lat,
+            @RequestParam("lng") String lng) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(billitaZoneService.getNowBillita(Double.parseDouble(lat), Double.parseDouble(lng)));
+    }
+
 }

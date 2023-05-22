@@ -9,14 +9,13 @@ import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
-import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
+import xyz.wavey.vehicleservice.vo.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
-import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
+
 import java.util.List;
 import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.model.BookList;
@@ -140,6 +139,31 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             if (dist < 10000) {
                 returnValue.add(billitaZone);
             }
+        }
+
+        return returnValue;
+    }
+
+    @Override
+    public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
+        List<ResponseGetNowBillita> returnValue = new ArrayList<>();
+
+        // todo 반환되는 자동차 선정 기준 필요 - 2023/05/22 - 김지욱
+        // 주어진 위경도로부터 반경 10km 이내에 있는 모든 빌리타존 내의 차량을 그대로 반환하는데 모든 값을 반환하는 것은 비효율적인것 같음
+        // 데이터 생성할 때 분산해서 빌리타존별로 차량을 최대 5개만 넣는 식으로 해결해야할 듯
+        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat,lng)) {
+            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
+            for (Vehicle vehicle : vehiclesInBillitaZone) {
+                returnValue.add(ResponseGetNowBillita.builder()
+                        .vehicleId(vehicle.getId())
+                        .billitaZoneId(vehicle.getLastZone())
+                        .billitaZoneName(billitaZoneRepo.findById(vehicle.getLastZone()).get().getName())
+                        .carBrand(vehicle.getFrame().getMaker().getName())
+                        .carName(vehicle.getFrame().getName())
+                        .frameImage(vehicle.getFrame().getImage())
+                        .build());
+            }
+            log.info(returnValue.toString());
         }
 
         return returnValue;

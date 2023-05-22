@@ -1,11 +1,14 @@
 package xyz.wavey.vehicleservice.service;
 
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.model.Vehicle;
+import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
@@ -21,6 +24,9 @@ public class BookListServiceImpl implements BookListService {
 
     private final BookListRepo bookListRepo;
     private final VehicleRepo vehicleRepo;
+    private final BillitaZoneRepo billitaZoneRepo;
+
+    private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
 
     @Override
     public ResponseEntity<Object> addBook(RequestBookList requestBookList) {
@@ -56,18 +62,29 @@ public class BookListServiceImpl implements BookListService {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+
     @Override
     public ResponseEntity<Object> getBookAboutVehicle(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
             NOT_FOUND_BOOKLIST.getHttpStatus()));
+
+        BillitaZone billitaZone = billitaZoneRepo.findById(id).orElseThrow(()
+            -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
+            NOT_FOUND_BILLITAZONE.getHttpStatus()));
+
         return ResponseEntity.status(HttpStatus.OK).body(ResponseBookAboutVehicle.builder()
+            .rentId(bookList.getId())
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .capacity(bookList.getVehicle().getFrame().getCapacity())
-            .name(bookList.getVehicle().getFrame().getName())
+            .carModel(bookList.getVehicle().getFrame().getName())
             .maker(bookList.getVehicle().getFrame().getMaker())
             .charge(bookList.getVehicle().getCharge())
+            .imageUrl(bookList.getVehicle().getFrame().getImage())
+            .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
+            .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
+            .billitaZone(billitaZone.getName())
             .build());
     }
 }

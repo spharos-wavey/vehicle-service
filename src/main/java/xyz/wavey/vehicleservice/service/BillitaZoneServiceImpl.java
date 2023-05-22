@@ -6,24 +6,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
-import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
-
 import java.util.List;
-
+import xyz.wavey.vehicleservice.model.Vehicle;
+import xyz.wavey.vehicleservice.model.BookList;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 @Service
@@ -122,6 +118,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
+
 
     @Override
     public List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng) {

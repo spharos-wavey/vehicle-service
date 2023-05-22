@@ -1,9 +1,8 @@
 package xyz.wavey.vehicleservice.service;
 
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_BILLITAZONE;
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_FRAME;
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICLE;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,15 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BillitaZone;
-import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
-import xyz.wavey.vehicleservice.repository.FrameRepo;
+import xyz.wavey.vehicleservice.model.BookList;
+import xyz.wavey.vehicleservice.repository.*;
 import xyz.wavey.vehicleservice.model.Vehicle;
-import xyz.wavey.vehicleservice.repository.ReviewRepo;
-import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseGetVehicle;
 import java.util.UUID;
+
+import xyz.wavey.vehicleservice.vo.ResponseGetVehicleInBillitaZone;
 import xyz.wavey.vehicleservice.vo.ReviewInfoMapping;
+
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final FrameRepo frameRepo;
     private final BillitaZoneRepo billitaZoneRepo;
     private final ReviewRepo reviewRepo;
+    private final BookListRepo bookListRepo;
 
     @Override
     public ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle) {
@@ -78,5 +80,49 @@ public class VehicleServiceImpl implements VehicleService {
             .review(reviewList)
             .build();
 
+    }
+
+    @Override
+    public List<ResponseGetVehicleInBillitaZone> getVehicleInBillitaZone(Long id, String sDate, String eDate) {
+        List<ResponseGetVehicleInBillitaZone> returnValue = new ArrayList<>();
+
+        //todo 중복코드에 대한 해결법 구상 후 적용 (2023-05-21) - 김지욱
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            startDate = LocalDateTime.parse(sDate, dateTimeFormatter);
+            endDate = LocalDateTime.parse(eDate, dateTimeFormatter);
+        } catch (Exception e) {
+            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
+        }
+
+        for (Vehicle vehicle : vehicleRepo.findAllByLastZone(id)) {
+            // 해당 차량의 모든 예약내용을 조회한다.
+            List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
+            boolean canBook = true;
+            for (BookList bookList : bookLists) {
+                // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
+                if (bookList.getStartDate().isAfter(endDate)) {
+                    break;
+                }
+
+                if (bookList.getEndDate().isAfter(startDate) && endDate.isAfter(bookList.getStartDate())) {
+                    canBook = false;
+                    break;
+                }
+            }
+            returnValue.add(ResponseGetVehicleInBillitaZone.builder()
+                    .vehicleModel(vehicle.getFrame().getName())
+                    .vehicleId(vehicle.getId())
+                    .canBook(canBook && vehicle.getAvailable())
+                    .defaultPrice(vehicle.getFrame().getDefaultPrice())
+                    .vehicleImage(vehicle.getFrame().getImage())
+                    .distancePrice(vehicle.getFrame().getDistancePrice())
+                    .currentCharge(vehicle.getCharge())
+                    .build());
+        }
+        return returnValue;
     }
 }

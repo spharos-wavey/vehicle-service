@@ -6,6 +6,6 @@ import xyz.wavey.vehicleservice.model.Frame;
 
 public interface FrameRepo extends JpaRepository<Frame, Long> {
 
-    List<Frame> findAllByMakerId(Integer makerId);
+    List<Frame> findAllByCarBrandId(Integer carBrandId);
 
 }

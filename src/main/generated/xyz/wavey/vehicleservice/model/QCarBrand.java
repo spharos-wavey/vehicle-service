@@ -10,31 +10,31 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QMaker is a Querydsl query type for Maker
+ * QCarBrand is a Querydsl query type for CarBrand
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMaker extends EntityPathBase<Maker> {
+public class QCarBrand extends EntityPathBase<CarBrand> {
 
-    private static final long serialVersionUID = -1198289795L;
+    private static final long serialVersionUID = 1436824890L;
 
-    public static final QMaker maker = new QMaker("maker");
+    public static final QCarBrand carBrand = new QCarBrand("carBrand");
+
+    public final StringPath brandName = createString("brandName");
 
     public final BooleanPath foreignCar = createBoolean("foreignCar");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final StringPath name = createString("name");
-
-    public QMaker(String variable) {
-        super(Maker.class, forVariable(variable));
+    public QCarBrand(String variable) {
+        super(CarBrand.class, forVariable(variable));
     }
 
-    public QMaker(Path<? extends Maker> path) {
+    public QCarBrand(Path<? extends CarBrand> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QMaker(PathMetadata metadata) {
-        super(Maker.class, metadata);
+    public QCarBrand(PathMetadata metadata) {
+        super(CarBrand.class, metadata);
     }
 
 }

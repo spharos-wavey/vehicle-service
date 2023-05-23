@@ -1,13 +1,11 @@
 package xyz.wavey.vehicleservice.vo;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-public class RequestMaker {
+public class RequestCarBrand {
 
-    private String name;
+    private String brandName;
     private Boolean foreignCar;
 
 }

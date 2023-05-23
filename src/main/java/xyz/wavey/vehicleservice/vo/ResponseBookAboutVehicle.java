@@ -13,8 +13,8 @@ import lombok.Setter;
 @Setter
 public class ResponseBookAboutVehicle {
     private Long rentId;
-    private String maker;
-    private String carModel;
+    private String carBrand;
+    private String carName;
     private String capacity;
     private Integer defaultPrice;
     private Integer distancePrice;

@@ -9,36 +9,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.wavey.vehicleservice.service.MakerService;
-import xyz.wavey.vehicleservice.vo.RequestMaker;
-import xyz.wavey.vehicleservice.vo.ResponseMaker;
+import xyz.wavey.vehicleservice.service.CarBrandService;
+import xyz.wavey.vehicleservice.vo.RequestCarBrand;
+import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/maker")
-public class MakerController {
+@RequestMapping("/carbrand")
+public class CarBrandController {
 
-    private final MakerService makerService;
+    private final CarBrandService carBrandService;
 
     @PostMapping()
-    public ResponseEntity<Object> addMaker(@RequestBody RequestMaker requestMaker) {
-        return makerService.addMaker(requestMaker);
+    public ResponseEntity<Object> addCarBrand(@RequestBody RequestCarBrand requestCarBrand) {
+        return carBrandService.addCarBrand(requestCarBrand);
     }
 
     @GetMapping("/{id}")
-    public ResponseMaker getMaker(@PathVariable Integer id) {
-        return makerService.getMaker(id);
+    public ResponseCarBrand getCarBrand(@PathVariable Integer id) {
+        return carBrandService.getCarBrand(id);
     }
 
     @GetMapping()
     public ResponseEntity<Object> getAllBrands() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(makerService.getAllBrands());
+                .body(carBrandService.getAllBrands());
     }
 
-    @GetMapping("/all/{id}")
-    public ResponseEntity<Object> getAllVehicleByMaker(@PathVariable Integer id){
-        return makerService.getAllVehicleByMaker(id);
+    @GetMapping("/maker/{id}")
+    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id){
+        return carBrandService.getAllVehicleByCarBrand(id);
     }
 }

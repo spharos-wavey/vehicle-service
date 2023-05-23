@@ -28,6 +28,10 @@ public class QFrame extends EntityPathBase<Frame> {
 
     public final StringPath capacity = createString("capacity");
 
+    public final QCarBrand carBrand;
+
+    public final StringPath carName = createString("carName");
+
     public final StringPath carType = createString("carType");
 
     public final StringPath color = createString("color");
@@ -43,11 +47,7 @@ public class QFrame extends EntityPathBase<Frame> {
 
     public final StringPath image = createString("image");
 
-    public final QMaker maker;
-
     public final StringPath manual = createString("manual");
-
-    public final StringPath name = createString("name");
 
     public final BooleanPath recommend = createBoolean("recommend");
 
@@ -72,7 +72,7 @@ public class QFrame extends EntityPathBase<Frame> {
 
     public QFrame(Class<? extends Frame> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.maker = inits.isInitialized("maker") ? new QMaker(forProperty("maker")) : null;
+        this.carBrand = inits.isInitialized("carBrand") ? new QCarBrand(forProperty("carBrand")) : null;
     }
 
 }

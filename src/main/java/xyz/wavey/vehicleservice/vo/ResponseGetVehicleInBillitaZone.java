@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseGetVehicleInBillitaZone {
 
-    private String vehicleModel;
+    private String carName;
     private Long vehicleId;
     private Boolean canBook;
     private Integer defaultPrice;

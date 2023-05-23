@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
-import xyz.wavey.vehicleservice.repository.MakerRepo;
+import xyz.wavey.vehicleservice.repository.CarBrandRepo;
 import xyz.wavey.vehicleservice.vo.RequestFrame;
 import xyz.wavey.vehicleservice.vo.ResponseFrame;
 
@@ -19,14 +19,14 @@ import xyz.wavey.vehicleservice.vo.ResponseFrame;
 public class FrameServiceImpl implements FrameService {
 
     private final FrameRepo frameRepo;
-    private final MakerRepo makerRepo;
+    private final CarBrandRepo carBrandRepo;
 
     @Override
     public ResponseEntity<Object> addFrame(RequestFrame requestFrame) {
         Frame frame = frameRepo.save(Frame.builder()
-            .maker(makerRepo.findById(requestFrame.getMakerId()).orElseThrow(() ->
+            .carBrand(carBrandRepo.findById(requestFrame.getCarBrandId()).orElseThrow(() ->
                     new ServiceException(NOT_FOUND_MAKER.getMessage(), NOT_FOUND_MAKER.getHttpStatus())))
-            .name(requestFrame.getName())
+            .carName(requestFrame.getCarName())
             .capacity(requestFrame.getCapacity())
             .recommend(requestFrame.getRecommend())
             .defaultPrice(requestFrame.getDefaultPrice())
@@ -46,11 +46,11 @@ public class FrameServiceImpl implements FrameService {
             -> new ServiceException(NOT_FOUND_FRAME.getMessage(),
             NOT_FOUND_FRAME.getHttpStatus()));
         return ResponseFrame.builder()
-            .maker(frame.getMaker().getName())
+            .carBrand(frame.getCarBrand().getBrandName())
             .recommend(frame.getRecommend())
             .capacity(frame.getCapacity())
-            .foreignCar(frame.getMaker().getForeignCar())
-            .name(frame.getName())
+            .foreignCar(frame.getCarBrand().getForeignCar())
+            .name(frame.getCarName())
             .defaultPrice(frame.getDefaultPrice())
             .distancePrice(frame.getDistancePrice())
             .carType(frame.getCarType())

@@ -8,4 +8,6 @@ import java.util.List;
 public interface VehicleRepo extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> findAllByLastZone(Long lastZoneId);
+
+    List<Vehicle> findAllByFrameId(Long frameId);
 }

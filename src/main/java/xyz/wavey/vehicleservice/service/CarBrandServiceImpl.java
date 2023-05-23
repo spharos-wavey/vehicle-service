@@ -1,5 +1,6 @@
 package xyz.wavey.vehicleservice.service;
 
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_CAR_BRAND;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.model.CarBrand;
+import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.repository.CarBrandRepo;
+import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
 
@@ -25,6 +28,7 @@ public class CarBrandServiceImpl implements CarBrandService {
 
     private final CarBrandRepo carBrandRepo;
     private final FrameRepo frameRepo;
+    private final VehicleRepo vehicleRepo;
 
     @Override
     public ResponseEntity<Object> addCarBrand(RequestCarBrand requestCarBrand) {
@@ -60,17 +64,25 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public ResponseEntity<Object> getAllVehicleByCarBrand(Integer id) {
-        List<ResponseGetAllVehicleByCarBrand> responseValue = new ArrayList<>();
-        List<Frame> frameList = frameRepo.findAllByCarBrandId(id);
+    public List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id) {
+        List<ResponseGetAllVehicleByCarBrand> returnValue = new ArrayList<>();
 
-        for(Frame frame : frameList) {
-            responseValue.add(ResponseGetAllVehicleByCarBrand.builder()
-                .carName(frame.getCarName())
-                .imageUrl(frame.getImage())
-                .build());
+        CarBrand carBrand = carBrandRepo.findById(id).orElseThrow(() ->
+                new ServiceException(NOT_FOUND_CAR_BRAND.getMessage(), NOT_FOUND_CAR_BRAND.getHttpStatus()));
+
+        for(Frame frame : frameRepo.findAllByCarBrandId(id)) {
+            for (Vehicle vehicle : vehicleRepo.findAllByFrameId(frame.getId())) {
+                returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
+                        .carName(frame.getCarName())
+                        .imageUrl(frame.getImage())
+                        .charge(vehicle.getCharge())
+                        .carBrandName(carBrand.getBrandName())
+                        .zoneAddress(vehicle.getLastZone().getZoneAddress())
+                        .billitaZone(vehicle.getLastZone().getName())
+                        .build());
+            }
         }
-        return ResponseEntity.status(HttpStatus.OK).body(responseValue);
+        return returnValue;
 
     }
 }

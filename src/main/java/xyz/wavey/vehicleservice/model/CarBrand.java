@@ -23,4 +23,6 @@ public class CarBrand {
     @Column(nullable = false)
     private Boolean foreignCar;
 
+    private String brandImage;
+
 }

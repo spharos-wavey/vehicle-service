@@ -57,8 +57,8 @@ public class Vehicle extends BaseTimeEntity {
     @Column
     private String smartKey;
 
-    @Column(nullable = false)
-    private Long lastZone;
+    @OneToOne
+    private BillitaZone lastZone;
 
     @Column(nullable = false)
     private LocalDateTime washTime;

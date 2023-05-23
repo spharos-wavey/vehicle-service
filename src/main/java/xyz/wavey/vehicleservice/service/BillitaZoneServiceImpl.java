@@ -156,8 +156,8 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             for (Vehicle vehicle : vehiclesInBillitaZone) {
                 returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
-                        .billitaZoneId(vehicle.getLastZone())
-                        .billitaZoneName(billitaZoneRepo.findById(vehicle.getLastZone()).get().getName())
+                        .billitaZoneId(vehicle.getLastZone().getId())
+                        .billitaZoneName(vehicle.getLastZone().getName())
                         .carBrand(vehicle.getFrame().getCarBrand().getBrandName())
                         .carName(vehicle.getFrame().getCarName())
                         .frameImage(vehicle.getFrame().getImage())

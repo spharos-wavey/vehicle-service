@@ -50,6 +50,7 @@ public class CarBrandController {
                         .charge(90)
                         .carBrandName("테스트 브랜드명1")
                         .zoneAddress("테스트 도로명 주소1")
+                        .billitaZone("테스트 빌리타존 이름1")
                 .build());
 
         returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
@@ -58,6 +59,7 @@ public class CarBrandController {
                 .charge(90)
                 .carBrandName("테스트 브랜드명2")
                 .zoneAddress("테스트 도로명 주소2")
+                .billitaZone("테스트 빌리타존 이름2")
                 .build());
 
         returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
@@ -66,6 +68,7 @@ public class CarBrandController {
                 .charge(90)
                 .carBrandName("테스트 브랜드명3")
                 .zoneAddress("테스트 도로명 주소3")
+                .billitaZone("테스트 빌리타존 이름3")
                 .build());
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }

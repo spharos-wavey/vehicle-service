@@ -16,5 +16,6 @@ public class ResponseGetAllVehicleByCarBrand {
     private Integer charge;
     private String carBrandName;
     private String zoneAddress;
+    private String billitaZone;
 
 }

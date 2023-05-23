@@ -13,5 +13,8 @@ public class ResponseGetAllVehicleByCarBrand {
 
     private String carName;
     private String imageUrl;
+    private Integer charge;
+    private String carBrandName;
+    private String zoneAddress;
 
 }

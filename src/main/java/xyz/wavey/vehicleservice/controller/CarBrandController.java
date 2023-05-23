@@ -14,7 +14,6 @@ import xyz.wavey.vehicleservice.vo.RequestCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

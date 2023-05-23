@@ -15,6 +15,7 @@ import xyz.wavey.vehicleservice.vo.RequestBookList;
 import xyz.wavey.vehicleservice.vo.ResponseBookAboutVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseBookList;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
+import xyz.wavey.vehicleservice.vo.ResponseSummary;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
@@ -86,5 +87,18 @@ public class BookListServiceImpl implements BookListService {
             .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
             .billitaZone(billitaZone.getName())
             .build());
+    }
+
+    @Override
+    public ResponseSummary getSummary(Long vehicleId) {
+        Vehicle vehicle = vehicleRepo.findById(vehicleId).orElseThrow(()
+            -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
+            NOT_FOUND_VEHICLE.getHttpStatus()));
+
+        return ResponseSummary.builder()
+                .imageUrl(vehicle.getFrame().getImage())
+                .brandName(vehicle.getFrame().getCarBrand().getBrandName())
+                .carName(vehicle.getFrame().getCarName())
+                .build();
     }
 }

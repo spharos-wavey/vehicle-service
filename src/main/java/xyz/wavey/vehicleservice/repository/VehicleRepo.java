@@ -1,11 +1,14 @@
 package xyz.wavey.vehicleservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.model.Vehicle;
 
 import java.util.List;
 
 public interface VehicleRepo extends JpaRepository<Vehicle, Long> {
 
-    List<Vehicle> findAllByLastZone(Long lastZoneId);
+    List<Vehicle> findAllByLastZone(BillitaZone billitaZone);
+
+    List<Vehicle> findAllByFrameId(Long frameId);
 }

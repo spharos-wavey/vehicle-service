@@ -37,7 +37,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> lastZone = createNumber("lastZone", Long.class);
+    public final QBillitaZone lastZone;
 
     public final NumberPath<java.math.BigDecimal> latitude = createNumber("latitude", java.math.BigDecimal.class);
 
@@ -73,6 +73,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
     public QVehicle(Class<? extends Vehicle> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.frame = inits.isInitialized("frame") ? new QFrame(forProperty("frame"), inits.get("frame")) : null;
+        this.lastZone = inits.isInitialized("lastZone") ? new QBillitaZone(forProperty("lastZone")) : null;
     }
 
 }

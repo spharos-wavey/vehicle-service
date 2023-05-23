@@ -6,6 +6,7 @@ import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
 
 import java.util.List;
 import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
+import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
 
 public interface CarBrandService {
 
@@ -14,6 +15,6 @@ public interface CarBrandService {
     ResponseCarBrand getCarBrand(Integer id);
     List<ResponseGetAllCarBrands> getAllBrands();
 
-    ResponseEntity<Object> getAllVehicleByCarBrand(Integer id);
+    List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id);
 
 }

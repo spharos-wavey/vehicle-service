@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseGetAllVehicleByMaker {
+public class ResponseGetAllVehicleByCarBrand {
 
-    private String carModel;
+    private String carName;
     private String imageUrl;
 
 }

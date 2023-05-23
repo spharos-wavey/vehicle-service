@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class ResponseMaker {
+@NoArgsConstructor
+public class ResponseGetAllCarBrands {
 
-    private String name;
-    private Boolean foreignCar;
+    private Integer id;
+    private String brandName;
 
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 
 public class ResponseFrame {
 
-    private String maker;
+    private String carBrand;
     private Boolean foreignCar;
     private String name;
     private String capacity;

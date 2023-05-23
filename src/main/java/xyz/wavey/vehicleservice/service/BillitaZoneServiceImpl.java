@@ -158,8 +158,8 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                         .vehicleId(vehicle.getId())
                         .billitaZoneId(vehicle.getLastZone())
                         .billitaZoneName(billitaZoneRepo.findById(vehicle.getLastZone()).get().getName())
-                        .carBrand(vehicle.getFrame().getMaker().getName())
-                        .carName(vehicle.getFrame().getName())
+                        .carBrand(vehicle.getFrame().getCarBrand().getBrandName())
+                        .carName(vehicle.getFrame().getCarName())
                         .frameImage(vehicle.getFrame().getImage())
                         .build());
             }

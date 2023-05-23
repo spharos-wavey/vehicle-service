@@ -114,7 +114,7 @@ public class VehicleServiceImpl implements VehicleService {
                 }
             }
             returnValue.add(ResponseGetVehicleInBillitaZone.builder()
-                    .vehicleModel(vehicle.getFrame().getName())
+                    .carName(vehicle.getFrame().getCarName())
                     .vehicleId(vehicle.getId())
                     .canBook(canBook && vehicle.getAvailable())
                     .defaultPrice(vehicle.getFrame().getDefaultPrice())

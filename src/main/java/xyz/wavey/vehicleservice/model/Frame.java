@@ -21,10 +21,10 @@ public class Frame extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    private Maker maker;
+    private CarBrand carBrand;
 
     @Column(nullable = false)
-    private String name;
+    private String carName;
 
     @Column(nullable = false)
     private String capacity;

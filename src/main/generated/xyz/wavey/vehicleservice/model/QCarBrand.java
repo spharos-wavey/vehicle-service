@@ -19,6 +19,8 @@ public class QCarBrand extends EntityPathBase<CarBrand> {
 
     public static final QCarBrand carBrand = new QCarBrand("carBrand");
 
+    public final StringPath brandImage = createString("brandImage");
+
     public final StringPath brandName = createString("brandName");
 
     public final BooleanPath foreignCar = createBoolean("foreignCar");

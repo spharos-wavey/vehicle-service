@@ -98,7 +98,10 @@ public class VehicleServiceImpl implements VehicleService {
             throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
-        for (Vehicle vehicle : vehicleRepo.findAllByLastZone(id)) {
+        List<Vehicle> vehicleList = vehicleRepo.findAllByLastZone(billitaZoneRepo.findById(id).orElseThrow(() ->
+                new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(), NOT_FOUND_BILLITAZONE.getHttpStatus())));
+
+        for (Vehicle vehicle : vehicleList) {
             // 해당 차량의 모든 예약내용을 조회한다.
             List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
             boolean canBook = true;

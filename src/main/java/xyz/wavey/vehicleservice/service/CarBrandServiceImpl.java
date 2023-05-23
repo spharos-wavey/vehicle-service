@@ -58,6 +58,7 @@ public class CarBrandServiceImpl implements CarBrandService {
             returnValue.add(ResponseGetAllCarBrands.builder()
                 .id(carBrand.getId())
                 .brandName(carBrand.getBrandName())
+                .brandImgUrl(carBrand.getBrandImage())
                 .build());
         }
         return returnValue;

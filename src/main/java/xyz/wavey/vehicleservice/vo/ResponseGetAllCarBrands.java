@@ -13,5 +13,6 @@ public class ResponseGetAllCarBrands {
 
     private Integer id;
     private String brandName;
+    private String brandImgUrl;
 
 }

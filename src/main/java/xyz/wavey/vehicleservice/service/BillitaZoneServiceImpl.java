@@ -86,7 +86,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
             int rentAbleAmount = 0;
-            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
+            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone);
             for (Vehicle vehicle : vehiclesInBillitaZone) {
                 // 해당 차량의 모든 예약내용을 조회한다.
                 List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
@@ -152,12 +152,12 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         // 주어진 위경도로부터 반경 10km 이내에 있는 모든 빌리타존 내의 차량을 그대로 반환하는데 모든 값을 반환하는 것은 비효율적인것 같음
         // 데이터 생성할 때 분산해서 빌리타존별로 차량을 최대 5개만 넣는 식으로 해결해야할 듯
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat,lng)) {
-            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone.getId());
+            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone);
             for (Vehicle vehicle : vehiclesInBillitaZone) {
                 returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
-                        .billitaZoneId(vehicle.getLastZone())
-                        .billitaZoneName(billitaZoneRepo.findById(vehicle.getLastZone()).get().getName())
+                        .billitaZoneId(vehicle.getLastZone().getId())
+                        .billitaZoneName(vehicle.getLastZone().getName())
                         .carBrand(vehicle.getFrame().getCarBrand().getBrandName())
                         .carName(vehicle.getFrame().getCarName())
                         .frameImage(vehicle.getFrame().getImage())

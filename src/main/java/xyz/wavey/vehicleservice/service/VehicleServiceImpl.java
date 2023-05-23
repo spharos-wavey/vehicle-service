@@ -41,7 +41,9 @@ public class VehicleServiceImpl implements VehicleService {
             .longitude(requestVehicle.getLongitude())
             .available(requestVehicle.getAvailable())
             .charge(requestVehicle.getCharge())
-            .lastZone(requestVehicle.getLastZone())
+            .lastZone(billitaZoneRepo.findById(requestVehicle.getLastZone())
+                    .orElseThrow(() ->
+                            new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(), NOT_FOUND_BILLITAZONE.getHttpStatus())))
             .washTime(requestVehicle.getWashTime())
             .smartKey(UUID.randomUUID().toString())
             .frame(frameRepo.findById(requestVehicle.getFrameId()).orElseThrow(()
@@ -58,9 +60,7 @@ public class VehicleServiceImpl implements VehicleService {
             .orElseThrow(() -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
                 NOT_FOUND_VEHICLE.getHttpStatus()));
 
-        BillitaZone billitaZone = billitaZoneRepo.findById(vehicle.getLastZone()).orElseThrow(
-            () -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
-                NOT_FOUND_BILLITAZONE.getHttpStatus()));
+        BillitaZone billitaZone = vehicle.getLastZone();
 
         List<ReviewInfoMapping> reviewList = reviewRepo.findAllByVehicleId(id);
 
@@ -71,7 +71,7 @@ public class VehicleServiceImpl implements VehicleService {
             .longitude(vehicle.getLongitude())
             .available(vehicle.getAvailable())
             .charge(vehicle.getCharge())
-            .lastZone(vehicle.getLastZone())
+            .lastZone(vehicle.getLastZone().getId())
             .smartKey(vehicle.getSmartKey())
             .frameInfo(vehicle.getFrame())
             .washTime(vehicle.getWashTime())
@@ -98,7 +98,10 @@ public class VehicleServiceImpl implements VehicleService {
             throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
-        for (Vehicle vehicle : vehicleRepo.findAllByLastZone(id)) {
+        List<Vehicle> vehicleList = vehicleRepo.findAllByLastZone(billitaZoneRepo.findById(id).orElseThrow(() ->
+                new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(), NOT_FOUND_BILLITAZONE.getHttpStatus())));
+
+        for (Vehicle vehicle : vehicleList) {
             // 해당 차량의 모든 예약내용을 조회한다.
             List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
             boolean canBook = true;

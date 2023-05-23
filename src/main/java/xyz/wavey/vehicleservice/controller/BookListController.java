@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BookListService;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
 import xyz.wavey.vehicleservice.vo.ResponseBookList;
+import xyz.wavey.vehicleservice.vo.ResponseSummary;
 
 @RestController
 @RequestMapping("/booklist")
@@ -31,6 +32,12 @@ public class BookListController {
     @GetMapping("/information/{id}")
     public ResponseEntity<Object> getBookAboutVehicle(@PathVariable Long id){
         return bookListService.getBookAboutVehicle(id);
+    }
+
+    @GetMapping("/summary/{vehicleId}")
+    public ResponseEntity<Object> getSummary(@PathVariable Long vehicleId){
+        ResponseSummary responseSummary = bookListService.getSummary(vehicleId);
+        return ResponseEntity.ok(responseSummary);
     }
 
 }

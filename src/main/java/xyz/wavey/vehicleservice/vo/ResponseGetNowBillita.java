@@ -12,6 +12,6 @@ public class ResponseGetNowBillita {
     private String billitaZoneName;
     private String carBrand;
     private String carName;
-    private String frameImage;
+    private String carImage;
 
 }

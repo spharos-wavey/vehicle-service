@@ -71,7 +71,7 @@ public class VehicleServiceImpl implements VehicleService {
             .longitude(vehicle.getLongitude())
             .available(vehicle.getAvailable())
             .charge(vehicle.getCharge())
-            .lastZone(vehicle.getLastZone().getId())
+            .actualReturnedZone(vehicle.getLastZone().getId())
             .smartKey(vehicle.getSmartKey())
             .frameInfo(vehicle.getFrame())
             .washTime(vehicle.getWashTime())

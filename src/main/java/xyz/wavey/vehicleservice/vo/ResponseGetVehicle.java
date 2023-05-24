@@ -29,7 +29,7 @@ public class ResponseGetVehicle {
     private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
-    private Long lastZone;
+    private Long actualReturnedZone;
     private String smartKey;
     private LocalDateTime washTime;
     private Integer mileage;

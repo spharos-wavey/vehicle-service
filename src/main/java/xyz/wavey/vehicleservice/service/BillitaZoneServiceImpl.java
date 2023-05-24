@@ -148,13 +148,24 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
         List<ResponseGetNowBillita> returnValue = new ArrayList<>();
 
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime twoHoursLater = currentTime.plusHours(2);
         // todo 반환되는 자동차 선정 기준 필요 - 2023/05/22 - 김지욱
         // 주어진 위경도로부터 반경 10km 이내에 있는 모든 빌리타존 내의 차량을 그대로 반환하는데 모든 값을 반환하는 것은 비효율적인것 같음
         // 데이터 생성할 때 분산해서 빌리타존별로 차량을 최대 5개만 넣는 식으로 해결해야할 듯
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat,lng)) {
             List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone);
             for (Vehicle vehicle : vehiclesInBillitaZone) {
-                returnValue.add(ResponseGetNowBillita.builder()
+                boolean canBook = true;
+                List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
+                for(BookList bookList : bookLists){
+                    if(bookList.getStartDate().isBefore(twoHoursLater) && bookList.getEndDate().isAfter(currentTime)){
+                        canBook = false;
+                        break;
+                    }
+                }
+                if(canBook) {
+                    returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
                         .billitaZoneId(vehicle.getLastZone().getId())
                         .billitaZoneName(vehicle.getLastZone().getName())
@@ -162,11 +173,11 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                         .carName(vehicle.getFrame().getCarName())
                         .carImage(vehicle.getFrame().getImage())
                         .build());
+                }
             }
             log.info(returnValue.toString());
         }
 
         return returnValue;
     }
-
 }

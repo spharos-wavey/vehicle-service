@@ -1,5 +1,6 @@
 package xyz.wavey.vehicleservice.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BillitaZoneService;
 import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
+import xyz.wavey.vehicleservice.vo.ResponseGetNowBillita;
 
 @RestController
 @RequestMapping("/billitazone")
@@ -43,8 +45,14 @@ public class BillitaZoneController {
             @RequestParam("lat") String lat,
             @RequestParam("lng") String lng) {
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(billitaZoneService.getNowBillita(Double.parseDouble(lat), Double.parseDouble(lng)));
-    }
+        List<ResponseGetNowBillita> responseGetNowBillitaList = billitaZoneService.getNowBillita(Double.parseDouble(lat), Double.parseDouble(lng));
 
+        if(responseGetNowBillitaList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(responseGetNowBillitaList);
+        }
+    }
 }

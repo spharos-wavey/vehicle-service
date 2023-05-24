@@ -51,6 +51,6 @@ jobs:
           key: ${{ secrets.SSH_KEY}}
           port: ${{ secrets.PORT }}
           script: |
-            docker-compose -f docker-compose.vehicle.yml down --rmi all
+            docker-compose -f docker-compose.vehicle.yml down
+            docker image rm ${{secrets.DOCKERHUB_USERNAME}}/vehicle-service:latest
             docker-compose -f docker-compose.vehicle.yml up -d
-            docker ps

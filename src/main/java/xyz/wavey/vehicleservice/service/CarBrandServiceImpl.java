@@ -76,6 +76,8 @@ public class CarBrandServiceImpl implements CarBrandService {
                     .carName(frame.getCarName())
                     .imageUrl(frame.getImage())
                     .charge(vehicle.getCharge())
+                    .defaultPrice(vehicle.getFrame().getDefaultPrice())
+                    .distancePrice(vehicle.getFrame().getDistancePrice())
                     .carBrandName(carBrand.getBrandName())
                     .zoneAddress(vehicle.getLastZone().getZoneAddress())
                     .billitaZone(vehicle.getLastZone().getName())

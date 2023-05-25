@@ -50,8 +50,16 @@ public class BillitaZoneController {
         @RequestParam("eDate") String endDate,
         @RequestParam("lat") String lat,
         @RequestParam("lng") String lng) {
-        return billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat),
-            Double.parseDouble(lng));
+        
+        List<ResponseTimeFilter> responseTimeFilters = billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat), Double.parseDouble(lng));
+
+        if(responseTimeFilters.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(responseTimeFilters);
+        }
     }
 
     @GetMapping("/now")

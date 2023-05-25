@@ -92,11 +92,12 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             }
 
             returnValue.add(ResponseTimeFilter.builder()
-                .billitaZoneId(billitaZone.getId())
-                .billitaZoneLat(billitaZone.getLatitude().doubleValue())
-                .billitaZoneLng(billitaZone.getLongitude().doubleValue())
-                .rentAbleAmount(rentAbleAmount)
-                .build());
+                    .billitaZoneId(billitaZone.getId())
+                    .billitaZoneName(billitaZone.getName())
+                    .billitaZoneLat(billitaZone.getLatitude().doubleValue())
+                    .billitaZoneLng(billitaZone.getLongitude().doubleValue())
+                    .rentAbleAmount(rentAbleAmount)
+                    .build());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);

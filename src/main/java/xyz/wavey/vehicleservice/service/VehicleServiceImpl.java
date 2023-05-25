@@ -5,8 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BillitaZone;
@@ -32,8 +30,8 @@ public class VehicleServiceImpl implements VehicleService {
     private final BookListRepo bookListRepo;
 
     @Override
-    public ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle) {
-        Vehicle vehicle = vehicleRepo.save(Vehicle.builder()
+    public Vehicle addVehicle(RequestVehicle requestVehicle) {
+        return vehicleRepo.save(Vehicle.builder()
             .feature(requestVehicle.getFeature())
             .number(requestVehicle.getNumber())
             .latitude(requestVehicle.getLatitude())
@@ -50,7 +48,6 @@ public class VehicleServiceImpl implements VehicleService {
                 NOT_FOUND_FRAME.getHttpStatus())))
             .mileage(requestVehicle.getMileage())
             .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
     }
 
     @Override

@@ -10,14 +10,13 @@ import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.vo.*;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
-
 import java.util.List;
 import xyz.wavey.vehicleservice.model.Vehicle;
+
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 @Service
@@ -29,14 +28,13 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     private final VehicleRepo vehicleRepo;
     private final BookListRepo bookListRepo;
 
-    public ResponseEntity<Object> addBillitaZone(RequestBillitaZone requestBillitaZone) {
-        BillitaZone billitaZone = billitaZoneRepo.save(BillitaZone.builder()
+    public BillitaZone addBillitaZone(RequestBillitaZone requestBillitaZone) {
+        return billitaZoneRepo.save(BillitaZone.builder()
             .name(requestBillitaZone.getName())
             .latitude(requestBillitaZone.getLatitude())
             .longitude(requestBillitaZone.getLongitude())
             .zoneAddress(requestBillitaZone.getZoneAddress())
             .build());
-        return ResponseEntity.status(HttpStatus.OK).body(billitaZone);
     }
 
     public ResponseBillitaZone getBillitaZone(Long id) {
@@ -52,7 +50,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
-    public ResponseEntity<Object> getAllBillitaZone() {
+    public List<ResponseGetAllBillitaZone> getAllBillitaZone() {
         List<ResponseGetAllBillitaZone> returnValue = new ArrayList<>();
         List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
 
@@ -64,11 +62,11 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 .longitude(billitaZone.getLongitude())
                 .build());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+        return returnValue;
     }
 
     @Override
-    public ResponseEntity<Object> timeFilter(String sDate, String eDate, double lat, double lng) {
+    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, double lat, double lng) {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
 
@@ -80,7 +78,8 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             startDate = LocalDateTime.parse(sDate, dateTimeFormatter);
             endDate = LocalDateTime.parse(eDate, dateTimeFormatter);
         } catch (Exception e) {
-            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
+            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(),
+                BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
@@ -101,7 +100,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                     .build());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+        return returnValue;
     }
 
 
@@ -113,10 +112,10 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         for (BillitaZone billitaZone : billitaZoneList) {
             double theta = lat - billitaZone.getLatitude().doubleValue();
             double dist = Math.sin(lat * Math.PI / 180.0)
-                    * Math.sin(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                    + Math.cos(lat * Math.PI / 180.0)
-                    * Math.cos(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                    * Math.cos(theta * Math.PI / 180.0);
+                * Math.sin(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
+                + Math.cos(lat * Math.PI / 180.0)
+                * Math.cos(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
+                * Math.cos(theta * Math.PI / 180.0);
             dist = Math.acos(dist);
             dist = dist * 180 / Math.PI;
             dist *= 60 * 1.1515 * 1609.344;
@@ -136,9 +135,10 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime twoHoursLater = currentTime.plusHours(2);
-        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat,lng)) {
+        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
             for (Vehicle vehicle : vehicleRepo.findAllByLastZone(billitaZone)) {
-                if(bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater).isEmpty()) {
+                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater)
+                    .isEmpty()) {
                     returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
                         .billitaZoneId(vehicle.getLastZone().getId())

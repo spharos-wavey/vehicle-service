@@ -4,8 +4,6 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_CAR_BR
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
@@ -31,12 +29,11 @@ public class CarBrandServiceImpl implements CarBrandService {
     private final VehicleRepo vehicleRepo;
 
     @Override
-    public ResponseEntity<Object> addCarBrand(RequestCarBrand requestCarBrand) {
-        CarBrand carBrand = carBrandRepo.save(CarBrand.builder()
+    public CarBrand addCarBrand(RequestCarBrand requestCarBrand) {
+        return carBrandRepo.save(CarBrand.builder()
             .brandName(requestCarBrand.getBrandName())
             .foreignCar(requestCarBrand.getForeignCar())
             .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(carBrand);
     }
 
     @Override
@@ -69,22 +66,22 @@ public class CarBrandServiceImpl implements CarBrandService {
         List<ResponseGetAllVehicleByCarBrand> returnValue = new ArrayList<>();
 
         CarBrand carBrand = carBrandRepo.findById(id).orElseThrow(() ->
-                new ServiceException(NOT_FOUND_CAR_BRAND.getMessage(), NOT_FOUND_CAR_BRAND.getHttpStatus()));
+            new ServiceException(NOT_FOUND_CAR_BRAND.getMessage(),
+                NOT_FOUND_CAR_BRAND.getHttpStatus()));
 
-        for(Frame frame : frameRepo.findAllByCarBrandId(id)) {
+        for (Frame frame : frameRepo.findAllByCarBrandId(id)) {
             for (Vehicle vehicle : vehicleRepo.findAllByFrameId(frame.getId())) {
                 returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
-                        .vehicleId(vehicle.getId())
-                        .carName(frame.getCarName())
-                        .imageUrl(frame.getImage())
-                        .charge(vehicle.getCharge())
-                        .carBrandName(carBrand.getBrandName())
-                        .zoneAddress(vehicle.getLastZone().getZoneAddress())
-                        .billitaZone(vehicle.getLastZone().getName())
-                        .build());
+                    .vehicleId(vehicle.getId())
+                    .carName(frame.getCarName())
+                    .imageUrl(frame.getImage())
+                    .charge(vehicle.getCharge())
+                    .carBrandName(carBrand.getBrandName())
+                    .zoneAddress(vehicle.getLastZone().getZoneAddress())
+                    .billitaZone(vehicle.getLastZone().getName())
+                    .build());
             }
         }
         return returnValue;
-
     }
 }

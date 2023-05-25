@@ -4,8 +4,6 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_FRAME;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
@@ -22,10 +20,11 @@ public class FrameServiceImpl implements FrameService {
     private final CarBrandRepo carBrandRepo;
 
     @Override
-    public ResponseEntity<Object> addFrame(RequestFrame requestFrame) {
-        Frame frame = frameRepo.save(Frame.builder()
+    public Frame addFrame(RequestFrame requestFrame) {
+        return frameRepo.save(Frame.builder()
             .carBrand(carBrandRepo.findById(requestFrame.getCarBrandId()).orElseThrow(() ->
-                    new ServiceException(NOT_FOUND_MAKER.getMessage(), NOT_FOUND_MAKER.getHttpStatus())))
+                new ServiceException(NOT_FOUND_MAKER.getMessage(),
+                    NOT_FOUND_MAKER.getHttpStatus())))
             .carName(requestFrame.getCarName())
             .capacity(requestFrame.getCapacity())
             .recommend(requestFrame.getRecommend())
@@ -37,7 +36,7 @@ public class FrameServiceImpl implements FrameService {
             .color(requestFrame.getColor())
             .image(requestFrame.getImage())
             .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(frame);
+
     }
 
     @Override

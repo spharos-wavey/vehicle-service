@@ -30,16 +30,15 @@ public class BookListServiceImpl implements BookListService {
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
 
     @Override
-    public ResponseEntity<Object> addBook(RequestBookList requestBookList) {
+    public BookList addBook(RequestBookList requestBookList) {
         Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
             -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
             NOT_FOUND_VEHICLE.getHttpStatus()));
-        BookList bookList = bookListRepo.save(BookList.builder()
+        return bookListRepo.save(BookList.builder()
             .startDate(requestBookList.getStartDate())
             .endDate(requestBookList.getEndDate())
             .vehicle(vehicle)
             .build());
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookList);
     }
 
     @Override
@@ -65,7 +64,7 @@ public class BookListServiceImpl implements BookListService {
 
 
     @Override
-    public ResponseEntity<Object> getBookAboutVehicle(Long id) {
+    public ResponseBookAboutVehicle getBookAboutVehicle(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
             NOT_FOUND_BOOKLIST.getHttpStatus()));
@@ -74,7 +73,7 @@ public class BookListServiceImpl implements BookListService {
             -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
             NOT_FOUND_BILLITAZONE.getHttpStatus()));
 
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseBookAboutVehicle.builder()
+        return ResponseBookAboutVehicle.builder()
             .rentId(bookList.getId())
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
@@ -86,7 +85,7 @@ public class BookListServiceImpl implements BookListService {
             .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
             .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
             .billitaZone(billitaZone.getName())
-            .build());
+            .build();
     }
 
     @Override

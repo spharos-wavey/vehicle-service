@@ -66,7 +66,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
-    public ResponseEntity<Object> timeFilter(String sDate, String eDate, double lat, double lng) {
+    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, double lat, double lng) {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                     .build());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+        return returnValue;
     }
 
 

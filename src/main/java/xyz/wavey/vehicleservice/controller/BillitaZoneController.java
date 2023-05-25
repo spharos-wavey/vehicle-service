@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.service.BillitaZoneService;
 import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;

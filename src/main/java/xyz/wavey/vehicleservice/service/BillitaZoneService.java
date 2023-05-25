@@ -1,11 +1,7 @@
 package xyz.wavey.vehicleservice.service;
 
-import org.springframework.http.ResponseEntity;
 import xyz.wavey.vehicleservice.model.BillitaZone;
-import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetNowBillita;
+import xyz.wavey.vehicleservice.vo.*;
 
 import java.util.List;
 

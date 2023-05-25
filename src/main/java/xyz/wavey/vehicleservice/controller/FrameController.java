@@ -2,6 +2,7 @@ package xyz.wavey.vehicleservice.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.service.FrameService;
 import xyz.wavey.vehicleservice.vo.RequestFrame;
-import xyz.wavey.vehicleservice.vo.ResponseFrame;
 
 @RestController
 @RequestMapping("/frame")
@@ -21,11 +21,15 @@ public class FrameController {
 
     @PostMapping()
     public ResponseEntity<Object> addFrame(@RequestBody RequestFrame requestFrame) {
-        return frameService.addFrame(requestFrame);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(frameService.addFrame(requestFrame));
     }
 
     @GetMapping("/{id}")
-    public ResponseFrame getFrame(@PathVariable Long id) {
-        return frameService.getFrame(id);
+    public ResponseEntity<Object> getFrame(@PathVariable Long id) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(frameService.getFrame(id));
     }
 }

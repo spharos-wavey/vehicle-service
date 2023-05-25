@@ -104,6 +104,7 @@ public class VehicleServiceImpl implements VehicleService {
             boolean canBook = bookListRepo.timeFilter(vehicle.getId(), startDate, endDate).isEmpty();
             returnValue.add(ResponseGetVehicleInBillitaZone.builder()
                     .carName(vehicle.getFrame().getCarName())
+                    .carBrandName(vehicle.getFrame().getCarBrand().getBrandName())
                     .vehicleId(vehicle.getId())
                     .canBook(canBook && vehicle.getAvailable())
                     .defaultPrice(vehicle.getFrame().getDefaultPrice())

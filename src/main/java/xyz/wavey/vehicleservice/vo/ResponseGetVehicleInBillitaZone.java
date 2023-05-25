@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ResponseGetVehicleInBillitaZone {
 
     private String carName;
+    private String carBrandName;
     private Long vehicleId;
     private Boolean canBook;
     private Integer defaultPrice;

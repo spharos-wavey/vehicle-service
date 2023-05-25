@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BillitaZone;
-import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.repository.*;
 import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
@@ -102,20 +101,7 @@ public class VehicleServiceImpl implements VehicleService {
                 new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(), NOT_FOUND_BILLITAZONE.getHttpStatus())));
 
         for (Vehicle vehicle : vehicleList) {
-            // 해당 차량의 모든 예약내용을 조회한다.
-            List<BookList> bookLists = bookListRepo.findAllByVehicleIdOrderByStartDate(vehicle.getId());
-            boolean canBook = true;
-            for (BookList bookList : bookLists) {
-                // 예약 테이블에서 예약 시작시간을 기준으로 오름차순 정렬했으므로 예약 시작시간이 현재 요청으로 들어온 예약 종료시간 보다 뒤에 있는 경우 비교를 하지 않아도 됨
-                if (bookList.getStartDate().isAfter(endDate)) {
-                    break;
-                }
-
-                if (bookList.getEndDate().isAfter(startDate) && endDate.isAfter(bookList.getStartDate())) {
-                    canBook = false;
-                    break;
-                }
-            }
+            boolean canBook = bookListRepo.timeFilter(vehicle.getId(), startDate, endDate).isEmpty();
             returnValue.add(ResponseGetVehicleInBillitaZone.builder()
                     .carName(vehicle.getFrame().getCarName())
                     .vehicleId(vehicle.getId())

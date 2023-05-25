@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseGetAllVehicleByCarBrand {
 
+    private Long vehicleId;
     private String carName;
     private String imageUrl;
     private Integer charge;

@@ -74,6 +74,7 @@ public class CarBrandServiceImpl implements CarBrandService {
         for(Frame frame : frameRepo.findAllByCarBrandId(id)) {
             for (Vehicle vehicle : vehicleRepo.findAllByFrameId(frame.getId())) {
                 returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
+                        .vehicleId(vehicle.getId())
                         .carName(frame.getCarName())
                         .imageUrl(frame.getImage())
                         .charge(vehicle.getCharge())

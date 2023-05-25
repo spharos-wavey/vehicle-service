@@ -94,6 +94,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
             returnValue.add(ResponseTimeFilter.builder()
                     .billitaZoneId(billitaZone.getId())
+                    .billitaZoneName(billitaZone.getName())
                     .billitaZoneLat(billitaZone.getLatitude().doubleValue())
                     .billitaZoneLng(billitaZone.getLongitude().doubleValue())
                     .rentAbleAmount(rentAbleAmount)

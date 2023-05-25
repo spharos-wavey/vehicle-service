@@ -1,6 +1,6 @@
 package xyz.wavey.vehicleservice.service;
 
-import org.springframework.http.ResponseEntity;
+import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseGetVehicle;
 import xyz.wavey.vehicleservice.vo.ResponseGetVehicleInBillitaZone;
@@ -8,7 +8,7 @@ import xyz.wavey.vehicleservice.vo.ResponseGetVehicleInBillitaZone;
 import java.util.List;
 
 public interface VehicleService {
-    ResponseEntity<Object> addVehicle(RequestVehicle requestVehicle);
+    Vehicle addVehicle(RequestVehicle requestVehicle);
 
     ResponseGetVehicle getVehicle(Long id);
 

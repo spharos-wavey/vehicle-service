@@ -47,7 +47,7 @@ public class BookListController {
             .body(bookListService.getSummary(vehicleId));
     }
 
-    @GetMapping("/check/license")
+    @PostMapping("/check/license")
     public ResponseEntity<Object> checkLicense(@RequestBody RequestCheckLicense requestCheckLicense) {
         if (bookListService.checkLicense(requestCheckLicense)) {
             return ResponseEntity.status(HttpStatus.OK).build();

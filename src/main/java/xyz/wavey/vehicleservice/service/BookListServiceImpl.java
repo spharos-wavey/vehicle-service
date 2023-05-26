@@ -7,15 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.model.BookList;
+import xyz.wavey.vehicleservice.model.License;
 import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
+import xyz.wavey.vehicleservice.repository.LicenseRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
-import xyz.wavey.vehicleservice.vo.RequestBookList;
-import xyz.wavey.vehicleservice.vo.ResponseBookAboutVehicle;
-import xyz.wavey.vehicleservice.vo.ResponseBookList;
+import xyz.wavey.vehicleservice.vo.*;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
-import xyz.wavey.vehicleservice.vo.ResponseSummary;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
@@ -26,6 +25,7 @@ public class BookListServiceImpl implements BookListService {
     private final BookListRepo bookListRepo;
     private final VehicleRepo vehicleRepo;
     private final BillitaZoneRepo billitaZoneRepo;
+    private final LicenseRepo licenseRepo;
 
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
 
@@ -99,5 +99,22 @@ public class BookListServiceImpl implements BookListService {
                 .brandName(vehicle.getFrame().getCarBrand().getBrandName())
                 .carName(vehicle.getFrame().getCarName())
                 .build();
+    }
+
+    @Override
+    public boolean checkLicense(RequestCheckLicense requestCheckLicense) {
+        if (!licenseRepo.existsByLicenseNumber(requestCheckLicense.getLicenseNumber())) {
+            return false;
+        } else {
+            License license = licenseRepo.findByLicenseNumber(requestCheckLicense.getLicenseNumber());
+            return license.getLevel().equals(requestCheckLicense.getLevel()) &&
+                    license.getType().equals(requestCheckLicense.getType()) &&
+                    license.getExpireDate().equals(requestCheckLicense.getExpireDate()) &&
+                    license.getIssueDate().equals(requestCheckLicense.getIssueDate()) &&
+                    license.getAddress().equals(requestCheckLicense.getAddress()) &&
+                    license.getAddressDetail().equals(requestCheckLicense.getAddressDetail()) &&
+                    license.getBirth().equals(requestCheckLicense.getBirth()) &&
+                    license.getUserName().equals(requestCheckLicense.getUserName());
+        }
     }
 }

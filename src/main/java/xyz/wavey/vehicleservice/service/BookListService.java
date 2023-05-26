@@ -2,10 +2,7 @@ package xyz.wavey.vehicleservice.service;
 
 import org.springframework.http.ResponseEntity;
 import xyz.wavey.vehicleservice.model.BookList;
-import xyz.wavey.vehicleservice.vo.RequestBookList;
-import xyz.wavey.vehicleservice.vo.ResponseBookAboutVehicle;
-import xyz.wavey.vehicleservice.vo.ResponseBookList;
-import xyz.wavey.vehicleservice.vo.ResponseSummary;
+import xyz.wavey.vehicleservice.vo.*;
 
 public interface BookListService {
 
@@ -18,4 +15,6 @@ public interface BookListService {
     ResponseBookAboutVehicle getBookAboutVehicle(Long id);
 
     ResponseSummary getSummary(Long vehicleId);
+
+    boolean checkLicense(RequestCheckLicense requestCheckLicense);
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BookListService;
 import xyz.wavey.vehicleservice.vo.RequestBookList;
+import xyz.wavey.vehicleservice.vo.RequestCheckLicense;
 
 @RestController
 @RequestMapping("/booklist")
@@ -46,4 +47,12 @@ public class BookListController {
             .body(bookListService.getSummary(vehicleId));
     }
 
+    @GetMapping("/check/license")
+    public ResponseEntity<Object> checkLicense(@RequestBody RequestCheckLicense requestCheckLicense) {
+        if (bookListService.checkLicense(requestCheckLicense)) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
 }

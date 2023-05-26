@@ -1,5 +1,6 @@
 package xyz.wavey.vehicleservice.service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,16 +28,26 @@ public class BookListServiceImpl implements BookListService {
     private final BillitaZoneRepo billitaZoneRepo;
     private final LicenseRepo licenseRepo;
 
-    private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
+    private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public BookList addBook(RequestBookList requestBookList) {
         Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
             -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
             NOT_FOUND_VEHICLE.getHttpStatus()));
+
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            startDate = LocalDateTime.parse(requestBookList.getStartDate(), dateTimeFormatterDate);
+            endDate = LocalDateTime.parse(requestBookList.getEndDate(), dateTimeFormatterDate);
+        } catch (Exception e) {
+            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
+        }
+
         return bookListRepo.save(BookList.builder()
-            .startDate(requestBookList.getStartDate())
-            .endDate(requestBookList.getEndDate())
+            .startDate(startDate)
+            .endDate(endDate)
             .vehicle(vehicle)
             .build());
     }

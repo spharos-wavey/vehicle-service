@@ -13,4 +13,7 @@ public interface VehicleService {
     ResponseGetVehicle getVehicle(Long id);
 
     List<ResponseGetVehicleInBillitaZone> getVehicleInBillitaZone(Long id, String sDate, String eDate);
+
+    boolean timeFilter(Long id, String sDate, String eDate);
+
 }

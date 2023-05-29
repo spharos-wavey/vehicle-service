@@ -13,7 +13,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 import xyz.wavey.vehicleservice.base.BaseTimeEntity;
@@ -34,10 +33,9 @@ public class Vehicle extends BaseTimeEntity {
     @JoinColumn
     private Frame frame;
 
-    //todo 아래의 타입 확인하기
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
-    private Map<String, Object> feature = new HashMap<>();
+    private Map<String, Object> feature;
 
     @Column(precision = 15, scale = 12, nullable = false)
     private BigDecimal latitude;

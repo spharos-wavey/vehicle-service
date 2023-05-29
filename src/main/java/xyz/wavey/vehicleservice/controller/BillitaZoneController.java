@@ -54,13 +54,8 @@ public class BillitaZoneController {
         
         List<ResponseTimeFilter> responseTimeFilters = billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat), Double.parseDouble(lng));
 
-        if(responseTimeFilters.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(responseTimeFilters);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(responseTimeFilters);
+
     }
 
     @GetMapping("/now")

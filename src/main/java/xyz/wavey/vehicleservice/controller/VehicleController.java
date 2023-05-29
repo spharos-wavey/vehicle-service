@@ -38,4 +38,12 @@ public class VehicleController {
             .body(vehicleService.getVehicleInBillitaZone(Long.valueOf(id), sDate, eDate));
     }
 
+    @GetMapping("/book-check")
+    public ResponseEntity<Object> timeFilter(
+            @RequestParam("id") Long id,
+            @RequestParam("sDate") String sDate,
+            @RequestParam("eDate") String eDate) {
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleService.timeFilter(id, sDate, eDate));
+    }
+
 }

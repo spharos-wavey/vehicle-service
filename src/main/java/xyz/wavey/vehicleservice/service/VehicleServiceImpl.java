@@ -29,6 +29,8 @@ public class VehicleServiceImpl implements VehicleService {
     private final ReviewRepo reviewRepo;
     private final BookListRepo bookListRepo;
 
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     @Override
     public Vehicle addVehicle(RequestVehicle requestVehicle) {
         return vehicleRepo.save(Vehicle.builder()
@@ -82,9 +84,6 @@ public class VehicleServiceImpl implements VehicleService {
     public List<ResponseGetVehicleInBillitaZone> getVehicleInBillitaZone(Long id, String sDate, String eDate) {
         List<ResponseGetVehicleInBillitaZone> returnValue = new ArrayList<>();
 
-        //todo 중복코드에 대한 해결법 구상 후 적용 (2023-05-21) - 김지욱
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
         LocalDateTime startDate;
         LocalDateTime endDate;
         try {
@@ -111,5 +110,18 @@ public class VehicleServiceImpl implements VehicleService {
                     .build());
         }
         return returnValue;
+    }
+
+    @Override
+    public boolean timeFilter(Long id, String sDate, String eDate) {
+        LocalDateTime startDate;
+        LocalDateTime endDate;
+        try {
+            startDate = LocalDateTime.parse(sDate, dateTimeFormatter);
+            endDate = LocalDateTime.parse(eDate, dateTimeFormatter);
+        } catch (Exception e) {
+            throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
+        }
+        return !bookListRepo.existsByIdAndEndDateIsAfterAndStartDateIsBefore(id, startDate, endDate);
     }
 }

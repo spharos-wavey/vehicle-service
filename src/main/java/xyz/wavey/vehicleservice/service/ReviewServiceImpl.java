@@ -4,8 +4,6 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_REVIEW
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICLE;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Review;
@@ -22,8 +20,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final VehicleRepo vehicleRepo;
 
     @Override
-    public ResponseEntity<Object> addReview(RequestReview requestReview) {
-        Review review = reviewRepo.save(Review.builder()
+    public Review addReview(RequestReview requestReview) {
+        return  reviewRepo.save(Review.builder()
             .vehicle(vehicleRepo.findById(requestReview.getVehicleId())
                 .orElseThrow(() -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
                     NOT_FOUND_VEHICLE.getHttpStatus())))
@@ -32,7 +30,6 @@ public class ReviewServiceImpl implements ReviewService {
             .nickName(requestReview.getNickName())
             .profile(requestReview.getProfile())
             .build());
-        return ResponseEntity.status(HttpStatus.OK).body(review);
     }
 
     @Override

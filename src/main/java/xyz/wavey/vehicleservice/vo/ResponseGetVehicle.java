@@ -1,7 +1,8 @@
 package xyz.wavey.vehicleservice.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import lombok.AllArgsConstructor;
@@ -28,9 +29,10 @@ public class ResponseGetVehicle {
     private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
-    private Long lastZone;
+    private Long actualReturnedZone;
     private String smartKey;
-    private Date washTime;
+    private LocalDateTime washTime;
     private Integer mileage;
+    private List<ReviewInfoMapping> review;
 
 }

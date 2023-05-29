@@ -3,7 +3,7 @@ package xyz.wavey.vehicleservice.model;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,11 +57,11 @@ public class Vehicle extends BaseTimeEntity {
     @Column
     private String smartKey;
 
-    @Column(nullable = false)
-    private Long lastZone;
+    @OneToOne
+    private BillitaZone lastZone;
 
     @Column(nullable = false)
-    private Date washTime;
+    private LocalDateTime washTime;
 
     @Column(nullable = false)
     private Integer mileage;

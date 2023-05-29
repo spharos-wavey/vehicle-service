@@ -6,24 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-
-public class ResponseFrame {
-
+public class ResponseBookAboutVehicle {
+    private Long rentId;
     private String carBrand;
-    private Boolean foreignCar;
-    private String name;
+    private String carName;
     private String capacity;
-    private Boolean recommend;
     private Integer defaultPrice;
     private Integer distancePrice;
-    private String carType;
-    private String appearance;
-    private String manual;
-    private String color;
-    private String image;
+    private Integer charge;
+    private String startDate;
+    private String endDate;
+    private String billitaZone;
+    private String imageUrl;
 }

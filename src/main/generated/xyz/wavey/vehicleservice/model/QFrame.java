@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,6 +18,8 @@ public class QFrame extends EntityPathBase<Frame> {
 
     private static final long serialVersionUID = -1204257370L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QFrame frame = new QFrame("frame");
 
     public final xyz.wavey.vehicleservice.base.QBaseTimeEntity _super = new xyz.wavey.vehicleservice.base.QBaseTimeEntity(this);
@@ -24,6 +27,10 @@ public class QFrame extends EntityPathBase<Frame> {
     public final StringPath appearance = createString("appearance");
 
     public final StringPath capacity = createString("capacity");
+
+    public final QCarBrand carBrand;
+
+    public final StringPath carName = createString("carName");
 
     public final StringPath carType = createString("carType");
 
@@ -36,17 +43,11 @@ public class QFrame extends EntityPathBase<Frame> {
 
     public final NumberPath<Integer> distancePrice = createNumber("distancePrice", Integer.class);
 
-    public final BooleanPath foreignCar = createBoolean("foreignCar");
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath image = createString("image");
 
-    public final StringPath maker = createString("maker");
-
-    public final StringPath manuel = createString("manuel");
-
-    public final StringPath name = createString("name");
+    public final StringPath manual = createString("manual");
 
     public final BooleanPath recommend = createBoolean("recommend");
 
@@ -54,15 +55,24 @@ public class QFrame extends EntityPathBase<Frame> {
     public final DateTimePath<java.time.LocalDateTime> updateDate = _super.updateDate;
 
     public QFrame(String variable) {
-        super(Frame.class, forVariable(variable));
+        this(Frame.class, forVariable(variable), INITS);
     }
 
     public QFrame(Path<? extends Frame> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QFrame(PathMetadata metadata) {
-        super(Frame.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QFrame(PathMetadata metadata, PathInits inits) {
+        this(Frame.class, metadata, inits);
+    }
+
+    public QFrame(Class<? extends Frame> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.carBrand = inits.isInitialized("carBrand") ? new QCarBrand(forProperty("carBrand")) : null;
     }
 
 }

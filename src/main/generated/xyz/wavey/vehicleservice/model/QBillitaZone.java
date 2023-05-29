@@ -27,6 +27,8 @@ public class QBillitaZone extends EntityPathBase<BillitaZone> {
 
     public final StringPath name = createString("name");
 
+    public final StringPath zoneAddress = createString("zoneAddress");
+
     public QBillitaZone(String variable) {
         super(BillitaZone.class, forVariable(variable));
     }

@@ -1,7 +1,7 @@
 package xyz.wavey.vehicleservice.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import lombok.Getter;
@@ -19,6 +19,6 @@ public class RequestVehicle {
     private Integer charge;
     private Long lastZone;
     private Long frameId;
-    private Date washTime;
+    private LocalDateTime washTime;
     private Integer mileage;
 }

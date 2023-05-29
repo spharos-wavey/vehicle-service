@@ -37,7 +37,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> lastZone = createNumber("lastZone", Long.class);
+    public final QBillitaZone lastZone;
 
     public final NumberPath<java.math.BigDecimal> latitude = createNumber("latitude", java.math.BigDecimal.class);
 
@@ -52,7 +52,7 @@ public class QVehicle extends EntityPathBase<Vehicle> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDate = _super.updateDate;
 
-    public final DateTimePath<java.util.Date> washTime = createDateTime("washTime", java.util.Date.class);
+    public final DateTimePath<java.time.LocalDateTime> washTime = createDateTime("washTime", java.time.LocalDateTime.class);
 
     public QVehicle(String variable) {
         this(Vehicle.class, forVariable(variable), INITS);
@@ -72,7 +72,8 @@ public class QVehicle extends EntityPathBase<Vehicle> {
 
     public QVehicle(Class<? extends Vehicle> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.frame = inits.isInitialized("frame") ? new QFrame(forProperty("frame")) : null;
+        this.frame = inits.isInitialized("frame") ? new QFrame(forProperty("frame"), inits.get("frame")) : null;
+        this.lastZone = inits.isInitialized("lastZone") ? new QBillitaZone(forProperty("lastZone")) : null;
     }
 
 }

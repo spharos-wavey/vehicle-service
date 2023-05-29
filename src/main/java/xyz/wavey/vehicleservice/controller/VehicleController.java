@@ -1,16 +1,11 @@
 package xyz.wavey.vehicleservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.VehicleService;
 import xyz.wavey.vehicleservice.vo.RequestVehicle;
-import xyz.wavey.vehicleservice.vo.ResponseGetVehicle;
 
 @RestController
 @RequestMapping("/vehicle")
@@ -21,12 +16,26 @@ public class VehicleController {
 
     @PostMapping()
     public ResponseEntity<Object> addVehicle(@RequestBody RequestVehicle requestVehicle) {
-        return vehicleService.addVehicle(requestVehicle);
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(vehicleService.addVehicle(requestVehicle));
     }
 
     @GetMapping("/{id}")
-    public ResponseGetVehicle getVehicle(@PathVariable Long id) {
-        return vehicleService.getVehicle(id);
+    public ResponseEntity<Object> getVehicle(@PathVariable Long id) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(vehicleService.getVehicle(id));
+    }
+
+    @GetMapping("/billitazone")
+    public ResponseEntity<Object> getVehicleInBillitaZone(
+        @RequestParam("id") String id,
+        @RequestParam("sDate") String sDate,
+        @RequestParam("eDate") String eDate) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(vehicleService.getVehicleInBillitaZone(Long.valueOf(id), sDate, eDate));
     }
 
 }

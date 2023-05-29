@@ -1,6 +1,7 @@
 package xyz.wavey.vehicleservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.service.ReviewService;
 import xyz.wavey.vehicleservice.vo.RequestReview;
-import xyz.wavey.vehicleservice.vo.ResponseReview;
 
 @RestController
 @RequestMapping("/review")
@@ -20,11 +20,15 @@ public class ReviewController {
 
     @PostMapping()
     public ResponseEntity<Object> addReview(@RequestBody RequestReview requestReview) {
-        return reviewService.addReview(requestReview);
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(reviewService.addReview(requestReview));
     }
 
     @GetMapping("/{id}")
-    public ResponseReview getReview(@PathVariable Long id) {
-        return reviewService.getReview(id);
+    public ResponseEntity<Object> getReview(@PathVariable Long id) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(reviewService.getReview(id));
     }
 }

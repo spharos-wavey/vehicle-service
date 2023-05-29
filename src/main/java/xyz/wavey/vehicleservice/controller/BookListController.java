@@ -50,9 +50,9 @@ public class BookListController {
     @PostMapping("/check/license")
     public ResponseEntity<Object> checkLicense(@RequestBody RequestCheckLicense requestCheckLicense) {
         if (bookListService.checkLicense(requestCheckLicense)) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.OK).body(true);
         } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(false);
         }
     }
 }

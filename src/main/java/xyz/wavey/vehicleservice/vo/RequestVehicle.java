@@ -13,8 +13,6 @@ public class RequestVehicle {
 
     private Map<String, Object> feature;
     private String number;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
     private Long lastZone;

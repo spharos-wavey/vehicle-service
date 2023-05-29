@@ -25,8 +25,6 @@ public class ResponseGetVehicle {
     private BillitaZone place;
     private Frame frameInfo;
     private String number;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
     private Long actualReturnedZone;

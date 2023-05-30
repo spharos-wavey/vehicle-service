@@ -25,6 +25,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     private final BillitaZoneRepo billitaZoneRepo;
     private final VehicleRepo vehicleRepo;
     private final BookListRepo bookListRepo;
+    private final KakaoOpenFeign kakaoOpenFeign;
 
     public BillitaZone addBillitaZone(RequestBillitaZone requestBillitaZone) {
         return billitaZoneRepo.save(BillitaZone.builder()
@@ -106,7 +107,15 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     public List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng) {
         List<BillitaZone> returnValue = new ArrayList<>();
 
-        List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
+        ResponseKakaoCoord2Address responseKakaoCoord2Address = kakaoOpenFeign.KakaoCoord2Address(RequestKakaoCoord2Address.builder()
+                .x(String.valueOf(lng))
+                .y(String.valueOf(lat))
+                .build());
+
+        List<BillitaZone> billitaZoneList =
+                billitaZoneRepo.findAllByRegionName(
+                        responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name());
+
         for (BillitaZone billitaZone : billitaZoneList) {
             double theta = lat - billitaZone.getLatitude().doubleValue();
             double dist = Math.sin(lat * Math.PI / 180.0)
@@ -135,8 +144,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         LocalDateTime twoHoursLater = currentTime.plusHours(2);
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
             for (Vehicle vehicle : vehicleRepo.findAllByLastZone(billitaZone)) {
-                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater)
-                    .isEmpty()) {
+                if (returnValue.size() >= 20)
+                    return returnValue;
+                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater).isEmpty()) {
                     returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
                         .billitaZoneId(vehicle.getLastZone().getId())

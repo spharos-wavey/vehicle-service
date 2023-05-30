@@ -144,8 +144,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
         LocalDateTime twoHoursLater = currentTime.plusHours(2);
         for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
             for (Vehicle vehicle : vehicleRepo.findAllByLastZone(billitaZone)) {
-                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater)
-                    .isEmpty()) {
+                if (returnValue.size() >= 20)
+                    return returnValue;
+                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater).isEmpty()) {
                     returnValue.add(ResponseGetNowBillita.builder()
                         .vehicleId(vehicle.getId())
                         .billitaZoneId(vehicle.getLastZone().getId())

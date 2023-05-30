@@ -112,8 +112,6 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 .y(String.valueOf(lat))
                 .build());
 
-        log.info(responseKakaoCoord2Address.toString());
-
         List<BillitaZone> billitaZoneList =
                 billitaZoneRepo.findAllByRegionName(
                         responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name());

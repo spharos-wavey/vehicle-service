@@ -80,10 +80,6 @@ public class BookListServiceImpl implements BookListService {
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
             NOT_FOUND_BOOKLIST.getHttpStatus()));
 
-        BillitaZone billitaZone = billitaZoneRepo.findById(id).orElseThrow(()
-            -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
-            NOT_FOUND_BILLITAZONE.getHttpStatus()));
-
         return ResponseBookAboutVehicle.builder()
             .rentId(bookList.getId())
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
@@ -95,7 +91,7 @@ public class BookListServiceImpl implements BookListService {
             .imageUrl(bookList.getVehicle().getFrame().getImage())
             .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
             .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
-            .billitaZone(billitaZone.getName())
+            .billitaZone(bookList.getVehicle().getLastZone().getName())
             .build();
     }
 

@@ -117,18 +117,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                         responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name());
 
         for (BillitaZone billitaZone : billitaZoneList) {
-            double theta = lat - billitaZone.getLatitude().doubleValue();
-            double dist = Math.sin(lat * Math.PI / 180.0)
-                * Math.sin(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                + Math.cos(lat * Math.PI / 180.0)
-                * Math.cos(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                * Math.cos(theta * Math.PI / 180.0);
-            dist = Math.acos(dist);
-            dist = dist * 180 / Math.PI;
-            dist *= 60 * 1.1515 * 1609.344;
-
             // 10km
-            if (dist < 10000) {
+            if (isDistanceReachedLimit(
+                    lat, lng, billitaZone.getLatitude().doubleValue(), billitaZone.getLongitude().doubleValue())) {
                 returnValue.add(billitaZone);
             }
         }
@@ -161,4 +152,22 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
         return returnValue;
     }
+
+    @Override
+    public Boolean isDistanceReachedLimit(double lat1, double lng1, double lat2, double lng2) {
+        double theta = lat1 - lat2;
+        double dist = Math.sin(lat1 * Math.PI / 180.0)
+                * Math.sin(lat2 * Math.PI / 180.0)
+                + Math.cos(lat1 * Math.PI / 180.0)
+                * Math.cos(lat2 * Math.PI / 180.0)
+                * Math.cos(theta * Math.PI / 180.0);
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist *= 60 * 1.1515 * 1609.344;
+
+        // 10km
+        return dist < 10000;
+    }
+
+
 }

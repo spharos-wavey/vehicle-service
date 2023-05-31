@@ -85,7 +85,7 @@ public class BookListServiceImpl implements BookListService {
             NOT_FOUND_BOOKLIST.getHttpStatus()));
 
         return ResponseBookAboutVehicle.builder()
-            .rentId(bookList.getId())
+            .bookId(bookList.getId())
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .capacity(bookList.getVehicle().getFrame().getCapacity())

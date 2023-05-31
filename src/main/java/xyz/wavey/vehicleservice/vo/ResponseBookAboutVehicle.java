@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResponseBookAboutVehicle {
-    private Long rentId;
+    private Long bookId;
     private String carBrand;
     private String carName;
     private String capacity;

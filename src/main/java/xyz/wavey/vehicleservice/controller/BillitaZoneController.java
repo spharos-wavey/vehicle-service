@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.wavey.vehicleservice.service.BillitaZoneService;
-import xyz.wavey.vehicleservice.vo.RequestBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllBillitaZone;
-import xyz.wavey.vehicleservice.vo.ResponseGetNowBillita;
-import xyz.wavey.vehicleservice.vo.ResponseTimeFilter;
+import xyz.wavey.vehicleservice.vo.*;
 
 @RestController
 @RequestMapping("/billitazone")
@@ -51,8 +48,8 @@ public class BillitaZoneController {
         @RequestParam("eDate") String endDate,
         @RequestParam("lat") String lat,
         @RequestParam("lng") String lng) {
-        
-        List<ResponseTimeFilter> responseTimeFilters = billitaZoneService.timeFilter(startDate, endDate, Double.parseDouble(lat), Double.parseDouble(lng));
+
+        List<ResponseTimeFilter> responseTimeFilters = billitaZoneService.timeFilter(startDate, endDate, lat, lng);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseTimeFilters);
 
@@ -73,4 +70,5 @@ public class BillitaZoneController {
                 .body(responseGetNowBillitaList);
         }
     }
+
 }

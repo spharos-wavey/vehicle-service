@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import xyz.wavey.vehicleservice.model.BillitaZone;
+import xyz.wavey.vehicleservice.vo.DtoTimeFilter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,15 +28,7 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
                         "on v.id = b.vehicle_id " +
                         "where b.start_date < :eDate and b.end_date > :sDate " +
                         "group by v.last_zone_id) r " +
-                    "on l.id = r.last_zone_id;", nativeQuery = true)
-    List<timeFilterDto> jpqlTest(@Param("regionName") String regionName, @Param("sDate") LocalDateTime sDate, @Param("eDate") LocalDateTime eDate);
-
-    interface timeFilterDto {
-        Long getBillitaZoneId();
-        double getBillitaZoneLat();
-        double getBillitaZoneLng();
-        Integer getRentAbleAmount();
-        String getBillitaZoneName();
-    }
+                    "on l.id = r.last_zone_id", nativeQuery = true)
+    List<DtoTimeFilter> jpqlTest(@Param("regionName") String regionName, @Param("sDate") LocalDateTime sDate, @Param("eDate") LocalDateTime eDate);
 
 }

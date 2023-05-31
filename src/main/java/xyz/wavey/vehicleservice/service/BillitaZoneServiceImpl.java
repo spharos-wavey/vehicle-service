@@ -26,6 +26,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     private final VehicleRepo vehicleRepo;
     private final BookListRepo bookListRepo;
     private final KakaoOpenFeign kakaoOpenFeign;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public BillitaZone addBillitaZone(RequestBillitaZone requestBillitaZone) {
         return billitaZoneRepo.save(BillitaZone.builder()
@@ -65,11 +66,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
-    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, double lat, double lng) {
+    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, String lat, String lng) {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         LocalDateTime startDate;
         LocalDateTime endDate;
@@ -81,22 +80,27 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
-        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
-            int rentAbleAmount = 0;
-            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone);
-            for (Vehicle vehicle : vehiclesInBillitaZone) {
-                if (bookListRepo.timeFilter(vehicle.getId(), startDate, endDate).isEmpty()) {
-                    rentAbleAmount++;
-                }
-            }
+        ResponseKakaoCoord2Address responseKakaoCoord2Address =
+                kakaoOpenFeign.KakaoCoord2Address(RequestKakaoCoord2Address.builder()
+                        .x(lng)
+                        .y(lat)
+                        .build());
 
-            returnValue.add(ResponseTimeFilter.builder()
-                    .billitaZoneId(billitaZone.getId())
-                    .billitaZoneName(billitaZone.getName())
-                    .billitaZoneLat(billitaZone.getLatitude().doubleValue())
-                    .billitaZoneLng(billitaZone.getLongitude().doubleValue())
-                    .rentAbleAmount(rentAbleAmount)
-                    .build());
+        List<DtoTimeFilter> dtoTimeFilterList = billitaZoneRepo.jpqlTest(
+                responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name(), startDate, endDate);
+
+        for (DtoTimeFilter dtoTimeFilter : dtoTimeFilterList) {
+            if (isDistanceReachedLimit(
+                    Double.parseDouble(lat), Double.parseDouble(lng),
+                    dtoTimeFilter.getBillitaZoneLat(), dtoTimeFilter.getBillitaZoneLng())) {
+                returnValue.add(ResponseTimeFilter.builder()
+                        .billitaZoneLat(dtoTimeFilter.getBillitaZoneLat())
+                        .billitaZoneLng(dtoTimeFilter.getBillitaZoneLng())
+                        .billitaZoneId(dtoTimeFilter.getBillitaZoneId())
+                        .billitaZoneName(dtoTimeFilter.getBillitaZoneName())
+                        .rentAbleAmount(dtoTimeFilter.getRentAbleAmount())
+                        .build());
+            }
         }
 
         return returnValue;

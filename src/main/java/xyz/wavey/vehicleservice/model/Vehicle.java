@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import xyz.wavey.vehicleservice.base.BaseTimeEntity;

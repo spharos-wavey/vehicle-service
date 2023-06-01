@@ -50,7 +50,7 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
             "WHERE veh.id " +
             "NOT IN ( " +
             "SELECT bl.vehicle_id " +
-            "FROM vehicle_db.book_list bl, vehicle ve " +
+            "FROM vehicle_db.book_list bl, vehicle_db.vehicle ve " +
             "WHERE bl.vehicle_id = ve.id " +
             "AND bl.end_date >= NOW() " +
             "AND bl.start_date <= DATE_ADD(NOW(), INTERVAL 2 HOUR))) as vehi JOIN billita_zone as bz " +

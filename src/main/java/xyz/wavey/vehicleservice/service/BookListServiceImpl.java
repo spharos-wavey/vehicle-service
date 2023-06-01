@@ -85,19 +85,18 @@ public class BookListServiceImpl implements BookListService {
             NOT_FOUND_BOOKLIST.getHttpStatus()));
 
         return ResponseBookAboutVehicle.builder()
-                .rentId(bookList.getId())
-                .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
-                .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
-                .capacity(bookList.getVehicle().getFrame().getCapacity())
-                .carName(bookList.getVehicle().getFrame().getCarName())
-                .carBrand(bookList.getVehicle().getFrame().getCarBrand().getBrandName())
-                .charge(bookList.getVehicle().getCharge())
-                .imageUrl(bookList.getVehicle().getFrame().getImage())
-                .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
-                .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
-                .billitaZoneId(bookList.getVehicle().getLastZone().getId())
-                .billitaZone(bookList.getVehicle().getLastZone().getName())
-                .build();
+            .bookId(bookList.getId())
+            .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
+            .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
+            .capacity(bookList.getVehicle().getFrame().getCapacity())
+            .carName(bookList.getVehicle().getFrame().getCarName())
+            .carBrand(bookList.getVehicle().getFrame().getCarBrand().getBrandName())
+            .charge(bookList.getVehicle().getCharge())
+            .imageUrl(bookList.getVehicle().getFrame().getImage())
+            .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
+            .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
+            .billitaZone(bookList.getVehicle().getLastZone().getName())
+            .build();
     }
 
     @Override

@@ -131,7 +131,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
         List<ResponseGetNowBillita> returnValue = new ArrayList<>();
 
-        List<ResponseGetNowBillitaList> vehicleList = billitaZoneRepo.billitaTest(lat, lng);
+        List<ResponseGetNowBillitaList> vehicleList = billitaZoneRepo.billitaTimeFilterByDistance(lat, lng);
         for (ResponseGetNowBillitaList responseGetNowBillitaList : vehicleList) {
             returnValue.add(ResponseGetNowBillita.builder()
                 .vehicleId(responseGetNowBillitaList.getVehicleId())

@@ -58,6 +58,6 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
             "HAVING distance < 10 " +
             "ORDER BY distance " +
             "LIMIT 20", nativeQuery = true)
-    List<ResponseGetNowBillitaList> billitaTest(@Param("lat") Double lat, @Param("lng") Double lng);
+    List<ResponseGetNowBillitaList> billitaTimeFilterByDistance(@Param("lat") Double lat, @Param("lng") Double lng);
 
 }

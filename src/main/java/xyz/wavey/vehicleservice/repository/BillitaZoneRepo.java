@@ -36,7 +36,7 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
         @Param("eDate") LocalDateTime eDate);
 
     @Query(value =
-        "SELECT V.id as vehicleId, image as carImage, car_name as carName, name as billitaZoneName, last_zone_id as billitaZoneId, ( "
+        "SELECT vehi.id as vehicleId, f.image as carImage, f.car_name as carName, bz.name as billitaZoneName, vehi.last_zone_id as billitaZoneId, ( "
             +
             "6371 * acos (cos(radians(35.1678779)) " +
             "* cos(radians(latitude )) " +
@@ -46,15 +46,15 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
             ") AS distance " +
             "FROM " +
             "(SELECT * " +
-            "FROM vehicle " +
-            "WHERE vehicle.id " +
+            "FROM vehicle_db.vehicle veh " +
+            "WHERE veh.id " +
             "NOT IN ( " +
-            "SELECT vehicle_id " +
-            "FROM book_list, vehicle " +
-            "WHERE book_list.vehicle_id = vehicle_id " +
-            "AND book_list.end_date >= NOW() " +
-            "AND book_list.start_date <= DATE_ADD(NOW(), INTERVAL 2 HOUR))) as V JOIN billita_zone " +
-            "ON V.last_zone_id = billita_zone.id left join frame on V.id = frame_id " +
+            "SELECT bl.vehicle_id " +
+            "FROM vehicle_db.book_list bl, vehicle_db.vehicle ve " +
+            "WHERE bl.vehicle_id = ve.id " +
+            "AND bl.end_date >= NOW() " +
+            "AND bl.start_date <= DATE_ADD(NOW(), INTERVAL 2 HOUR))) as vehi JOIN billita_zone as bz " +
+            "ON vehi.last_zone_id = bz.id left join frame as f on vehi.frame_id = f.id " +
             "HAVING distance < 10 " +
             "ORDER BY distance " +
             "LIMIT 20", nativeQuery = true)

@@ -21,6 +21,7 @@ public class ResponseBookAboutVehicle {
     private Integer charge;
     private String startDate;
     private String endDate;
+    private Long billitaZoneId;
     private String billitaZone;
     private String imageUrl;
 }

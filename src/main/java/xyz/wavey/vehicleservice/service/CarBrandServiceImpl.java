@@ -1,32 +1,24 @@
 package xyz.wavey.vehicleservice.service;
 
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_CAR_BRAND;
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
+import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
-import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.model.CarBrand;
-import xyz.wavey.vehicleservice.model.Vehicle;
-import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.repository.CarBrandRepo;
-import xyz.wavey.vehicleservice.repository.VehicleRepo;
-import xyz.wavey.vehicleservice.vo.RequestCarBrand;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
+import xyz.wavey.vehicleservice.vo.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
-import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
 
 @Service
 @RequiredArgsConstructor
 public class CarBrandServiceImpl implements CarBrandService {
 
     private final CarBrandRepo carBrandRepo;
-    private final FrameRepo frameRepo;
-    private final VehicleRepo vehicleRepo;
 
     @Override
     public CarBrand addCarBrand(RequestCarBrand requestCarBrand) {
@@ -62,28 +54,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id) {
-        List<ResponseGetAllVehicleByCarBrand> returnValue = new ArrayList<>();
-
-        CarBrand carBrand = carBrandRepo.findById(id).orElseThrow(() ->
-            new ServiceException(NOT_FOUND_CAR_BRAND.getMessage(),
-                NOT_FOUND_CAR_BRAND.getHttpStatus()));
-
-        for (Frame frame : frameRepo.findAllByCarBrandId(id)) {
-            for (Vehicle vehicle : vehicleRepo.findAllByFrameId(frame.getId())) {
-                returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
-                    .vehicleId(vehicle.getId())
-                    .carName(frame.getCarName())
-                    .imageUrl(frame.getImage())
-                    .charge(vehicle.getCharge())
-                    .defaultPrice(vehicle.getFrame().getDefaultPrice())
-                    .distancePrice(vehicle.getFrame().getDistancePrice())
-                    .carBrandName(carBrand.getBrandName())
-                    .zoneAddress(vehicle.getLastZone().getZoneAddress())
-                    .billitaZone(vehicle.getLastZone().getName())
-                    .build());
-            }
-        }
-        return returnValue;
+    public Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, Pageable pageable) {
+        return carBrandRepo.findAllByFrameId(id, pageable);
     }
 }

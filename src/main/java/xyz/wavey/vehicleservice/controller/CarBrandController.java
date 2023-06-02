@@ -1,6 +1,7 @@
 package xyz.wavey.vehicleservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.service.CarBrandService;
 import xyz.wavey.vehicleservice.vo.RequestCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
 
 import java.util.List;
 
@@ -51,15 +51,9 @@ public class CarBrandController {
     }
 
     @GetMapping("/maker/{id}")
-    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id) {
-        List<ResponseGetAllVehicleByCarBrand> responseGetAllVehicleByCarBrandList = carBrandService.getAllVehicleByCarBrand(
-            id);
-        if (responseGetAllVehicleByCarBrandList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity
+    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id, Pageable pageable) {
+        return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(responseGetAllVehicleByCarBrandList);
-        }
+                .body(carBrandService.getAllVehicleByCarBrand(id, pageable));
     }
 }

@@ -10,7 +10,6 @@ public class ResponseGetNowBillita {
     private Long vehicleId;
     private Long billitaZoneId;
     private String billitaZoneName;
-    private String carBrand;
     private String carName;
     private String carImage;
 

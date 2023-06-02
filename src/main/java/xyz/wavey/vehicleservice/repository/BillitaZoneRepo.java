@@ -38,10 +38,10 @@ public interface BillitaZoneRepo extends JpaRepository<BillitaZone, Long> {
     @Query(value =
         "SELECT vehi.id as vehicleId, f.image as carImage, f.car_name as carName, bz.name as billitaZoneName, vehi.last_zone_id as billitaZoneId, ( "
             +
-            "6371 * acos (cos(radians(35.1678779)) " +
+            "6371 * acos (cos(radians(:lat)) " +
             "* cos(radians(latitude )) " +
-            "* cos(radians(longitude) - radians(129.1231357)) " +
-            "+ sin(radians(35.1678779)) * sin(radians(latitude)) " +
+            "* cos(radians(longitude) - radians(:lng)) " +
+            "+ sin(radians(:lat)) * sin(radians(latitude)) " +
             ") " +
             ") AS distance " +
             "FROM " +

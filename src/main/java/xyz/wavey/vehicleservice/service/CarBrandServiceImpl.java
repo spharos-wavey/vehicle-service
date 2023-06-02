@@ -1,14 +1,11 @@
 package xyz.wavey.vehicleservice.service;
 
-import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_CAR_BRAND;
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
-import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.model.CarBrand;
-import xyz.wavey.vehicleservice.model.Vehicle;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.repository.CarBrandRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
@@ -19,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
+import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrandList;
 
 @Service
 @RequiredArgsConstructor
@@ -62,27 +60,23 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id) {
+    public List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id, double lat, double lng) {
         List<ResponseGetAllVehicleByCarBrand> returnValue = new ArrayList<>();
 
-        CarBrand carBrand = carBrandRepo.findById(id).orElseThrow(() ->
-            new ServiceException(NOT_FOUND_CAR_BRAND.getMessage(),
-                NOT_FOUND_CAR_BRAND.getHttpStatus()));
-
-        for (Frame frame : frameRepo.findAllByCarBrandId(id)) {
-            for (Vehicle vehicle : vehicleRepo.findAllByFrameId(frame.getId())) {
-                returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
-                    .vehicleId(vehicle.getId())
-                    .carName(frame.getCarName())
-                    .imageUrl(frame.getImage())
-                    .charge(vehicle.getCharge())
-                    .defaultPrice(vehicle.getFrame().getDefaultPrice())
-                    .distancePrice(vehicle.getFrame().getDistancePrice())
-                    .carBrandName(carBrand.getBrandName())
-                    .zoneAddress(vehicle.getLastZone().getZoneAddress())
-                    .billitaZone(vehicle.getLastZone().getName())
-                    .build());
-            }
+        List<ResponseGetAllVehicleByCarBrandList> carBrandLists = carBrandRepo.getAllVehicleByCarBrandList(id, lat,
+            lng);
+        for (ResponseGetAllVehicleByCarBrandList responseGetAllVehicleByCarBrandList : carBrandLists) {
+            returnValue.add(ResponseGetAllVehicleByCarBrand.builder()
+                .vehicleId(responseGetAllVehicleByCarBrandList.getVehicleId())
+                .carName(responseGetAllVehicleByCarBrandList.getCarName())
+                .imageUrl(responseGetAllVehicleByCarBrandList.getImageUrl())
+                .charge(responseGetAllVehicleByCarBrandList.getCharge())
+                .defaultPrice(responseGetAllVehicleByCarBrandList.getDefaultPrice())
+                .distancePrice(responseGetAllVehicleByCarBrandList.getDistancePrice())
+                .carBrandName(responseGetAllVehicleByCarBrandList.getCarBrandName())
+                .zoneAddress(responseGetAllVehicleByCarBrandList.getZoneAddress())
+                .billitaZone(responseGetAllVehicleByCarBrandList.getBillitaZone())
+                .build());
         }
         return returnValue;
     }

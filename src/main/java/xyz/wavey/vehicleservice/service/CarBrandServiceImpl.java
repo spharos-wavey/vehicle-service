@@ -13,6 +13,9 @@ import xyz.wavey.vehicleservice.vo.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import xyz.wavey.vehicleservice.vo.RequestCarBrand;
+import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
+import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +57,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, Pageable pageable) {
-        return carBrandRepo.findAllByFrameId(id, pageable);
+    public Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, double lat, double lng, Pageable pageable) {
+        return carBrandRepo.findAllByFrameId(id, lat, lng, pageable);
     }
 }

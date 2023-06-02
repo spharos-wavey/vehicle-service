@@ -15,6 +15,6 @@ public interface CarBrandService {
 
     List<ResponseGetAllCarBrands> getAllBrands();
 
-    Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, Pageable pageable);
+    Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, double lat, double lng, Pageable pageable);
 
 }

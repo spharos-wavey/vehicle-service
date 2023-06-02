@@ -1,11 +1,12 @@
 package xyz.wavey.vehicleservice.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import xyz.wavey.vehicleservice.model.CarBrand;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrandList;
+import xyz.wavey.vehicleservice.vo.DtoFindAllByFrameId;
 
 public interface CarBrandRepo extends JpaRepository<CarBrand, Integer> {
 
@@ -33,6 +34,6 @@ public interface CarBrandRepo extends JpaRepository<CarBrand, Integer> {
             "on f.car_brand_id = cb.id && cb.id = :id " +
             "HAVING distance < 10 " +
             "ORDER BY distance ", nativeQuery = true)
-    List<ResponseGetAllVehicleByCarBrandList> getAllVehicleByCarBrandList(@Param("id") Integer id,
-        @Param("lat") Double lat, @Param("lng") Double lng);
+    Slice<DtoFindAllByFrameId> findAllByFrameId(@Param("id") Integer id,
+        @Param("lat") Double lat, @Param("lng") Double lng, Pageable pageable);
 }

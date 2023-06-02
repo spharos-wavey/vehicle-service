@@ -1,12 +1,11 @@
 package xyz.wavey.vehicleservice.service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import xyz.wavey.vehicleservice.model.CarBrand;
-import xyz.wavey.vehicleservice.vo.RequestCarBrand;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
+import xyz.wavey.vehicleservice.vo.*;
 
 import java.util.List;
-import xyz.wavey.vehicleservice.vo.ResponseCarBrand;
-import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrand;
 
 public interface CarBrandService {
 
@@ -16,5 +15,6 @@ public interface CarBrandService {
 
     List<ResponseGetAllCarBrands> getAllBrands();
 
-    List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id, double lat, double lng);
+    Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, double lat, double lng, Pageable pageable);
+
 }

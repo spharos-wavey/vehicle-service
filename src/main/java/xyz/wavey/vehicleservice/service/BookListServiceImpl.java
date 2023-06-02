@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.model.License;
 import xyz.wavey.vehicleservice.model.Vehicle;
@@ -28,6 +29,7 @@ public class BookListServiceImpl implements BookListService {
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
+    @Transactional(readOnly = false)
     public ResponseAddBook addBook(RequestBookList requestBookList) {
         Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
             -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavey.vehicleservice.service.CarBrandService;
 import xyz.wavey.vehicleservice.vo.RequestCarBrand;
@@ -51,9 +52,10 @@ public class CarBrandController {
     }
 
     @GetMapping("/maker/{id}")
-    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id) {
+    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id, @RequestParam("lat") String lat,
+        @RequestParam("lng") String lng) {
         List<ResponseGetAllVehicleByCarBrand> responseGetAllVehicleByCarBrandList = carBrandService.getAllVehicleByCarBrand(
-            id);
+            id, Double.parseDouble(lat), Double.parseDouble(lng));
         if (responseGetAllVehicleByCarBrandList.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {

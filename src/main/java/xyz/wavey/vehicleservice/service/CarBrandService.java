@@ -16,6 +16,5 @@ public interface CarBrandService {
 
     List<ResponseGetAllCarBrands> getAllBrands();
 
-    List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id);
-
+    List<ResponseGetAllVehicleByCarBrand> getAllVehicleByCarBrand(Integer id, double lat, double lng);
 }

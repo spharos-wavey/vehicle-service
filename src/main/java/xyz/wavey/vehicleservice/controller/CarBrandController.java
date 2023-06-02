@@ -52,8 +52,13 @@ public class CarBrandController {
     }
 
     @GetMapping("/maker/{id}")
-    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id, @RequestParam("lat") String lat,
-        @RequestParam("lng") String lng) {
+    public ResponseEntity<Object> getAllVehicleByCarBrand(@PathVariable Integer id,
+        @RequestParam(required = false, value = "lat") String lat,
+        @RequestParam(required = false, value = "lng") String lng) {
+        if (lat == null || lng == null) {
+            lat = "35.165826559288";
+            lng = "129.132569894110";
+        }
         List<ResponseGetAllVehicleByCarBrand> responseGetAllVehicleByCarBrandList = carBrandService.getAllVehicleByCarBrand(
             id, Double.parseDouble(lat), Double.parseDouble(lng));
         if (responseGetAllVehicleByCarBrandList.isEmpty()) {

@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.CarBrand;
-import xyz.wavey.vehicleservice.repository.FrameRepo;
 import xyz.wavey.vehicleservice.repository.CarBrandRepo;
-import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import xyz.wavey.vehicleservice.vo.RequestCarBrand;
 import xyz.wavey.vehicleservice.vo.ResponseGetAllCarBrands;
 
@@ -23,8 +21,6 @@ import xyz.wavey.vehicleservice.vo.ResponseGetAllVehicleByCarBrandList;
 public class CarBrandServiceImpl implements CarBrandService {
 
     private final CarBrandRepo carBrandRepo;
-    private final FrameRepo frameRepo;
-    private final VehicleRepo vehicleRepo;
 
     @Override
     public CarBrand addCarBrand(RequestCarBrand requestCarBrand) {

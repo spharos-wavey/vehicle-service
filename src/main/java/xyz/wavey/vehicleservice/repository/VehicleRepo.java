@@ -10,5 +10,4 @@ public interface VehicleRepo extends JpaRepository<Vehicle, Long> {
 
     List<Vehicle> findAllByLastZone(BillitaZone billitaZone);
 
-    List<Vehicle> findAllByFrameId(Long frameId);
 }

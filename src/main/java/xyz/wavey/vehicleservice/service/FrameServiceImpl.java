@@ -5,6 +5,7 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_MAKER;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Frame;
 import xyz.wavey.vehicleservice.repository.FrameRepo;
@@ -20,6 +21,7 @@ public class FrameServiceImpl implements FrameService {
     private final CarBrandRepo carBrandRepo;
 
     @Override
+    @Transactional(readOnly = false)
     public Frame addFrame(RequestFrame requestFrame) {
         return frameRepo.save(Frame.builder()
             .carBrand(carBrandRepo.findById(requestFrame.getCarBrandId()).orElseThrow(() ->
@@ -40,6 +42,7 @@ public class FrameServiceImpl implements FrameService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseFrame getFrame(Long id) {
         Frame frame = frameRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_FRAME.getMessage(),

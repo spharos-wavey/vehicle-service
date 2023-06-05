@@ -81,6 +81,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 .y(lat)
                 .build());
 
+        if (responseKakaoCoord2Address.getMeta().getTotal_count() == 0)
+            return returnValue;
+
         List<DtoTimeFilter> dtoTimeFilterList = billitaZoneRepo.jpqlTest(
             responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name(), startDate, endDate);
 

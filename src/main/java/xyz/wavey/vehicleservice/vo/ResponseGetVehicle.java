@@ -1,6 +1,5 @@
 package xyz.wavey.vehicleservice.vo;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,6 @@ public class ResponseGetVehicle {
     private BillitaZone place;
     private Frame frameInfo;
     private String number;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
     private Boolean available;
     private Integer charge;
     private Long actualReturnedZone;

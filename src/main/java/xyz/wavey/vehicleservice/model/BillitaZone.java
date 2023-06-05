@@ -39,4 +39,6 @@ public class BillitaZone {
 
     @Column(nullable = false)
     private String zoneAddress;
+
+    private String regionName;
 }

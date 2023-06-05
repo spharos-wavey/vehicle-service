@@ -4,16 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
-import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.vo.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import xyz.wavey.vehicleservice.repository.VehicleRepo;
 import java.util.List;
-import xyz.wavey.vehicleservice.model.Vehicle;
 
 import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 
@@ -23,8 +20,8 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.*;
 public class BillitaZoneServiceImpl implements BillitaZoneService {
 
     private final BillitaZoneRepo billitaZoneRepo;
-    private final VehicleRepo vehicleRepo;
-    private final BookListRepo bookListRepo;
+    private final KakaoOpenFeign kakaoOpenFeign;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public BillitaZone addBillitaZone(RequestBillitaZone requestBillitaZone) {
         return billitaZoneRepo.save(BillitaZone.builder()
@@ -64,11 +61,9 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
-    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, double lat, double lng) {
+    public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, String lat, String lng) {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         LocalDateTime startDate;
         LocalDateTime endDate;
@@ -80,22 +75,27 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
                 BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
-        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
-            int rentAbleAmount = 0;
-            List<Vehicle> vehiclesInBillitaZone = vehicleRepo.findAllByLastZone(billitaZone);
-            for (Vehicle vehicle : vehiclesInBillitaZone) {
-                if (bookListRepo.timeFilter(vehicle.getId(), startDate, endDate).isEmpty()) {
-                    rentAbleAmount++;
-                }
-            }
+        ResponseKakaoCoord2Address responseKakaoCoord2Address =
+            kakaoOpenFeign.KakaoCoord2Address(RequestKakaoCoord2Address.builder()
+                .x(lng)
+                .y(lat)
+                .build());
 
-            returnValue.add(ResponseTimeFilter.builder()
-                    .billitaZoneId(billitaZone.getId())
-                    .billitaZoneName(billitaZone.getName())
-                    .billitaZoneLat(billitaZone.getLatitude().doubleValue())
-                    .billitaZoneLng(billitaZone.getLongitude().doubleValue())
-                    .rentAbleAmount(rentAbleAmount)
+        List<DtoTimeFilter> dtoTimeFilterList = billitaZoneRepo.jpqlTest(
+            responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name(), startDate, endDate);
+
+        for (DtoTimeFilter dtoTimeFilter : dtoTimeFilterList) {
+            if (isDistanceReachedLimit(
+                Double.parseDouble(lat), Double.parseDouble(lng),
+                dtoTimeFilter.getBillitaZoneLat(), dtoTimeFilter.getBillitaZoneLng())) {
+                returnValue.add(ResponseTimeFilter.builder()
+                    .billitaZoneLat(dtoTimeFilter.getBillitaZoneLat())
+                    .billitaZoneLng(dtoTimeFilter.getBillitaZoneLng())
+                    .billitaZoneId(dtoTimeFilter.getBillitaZoneId())
+                    .billitaZoneName(dtoTimeFilter.getBillitaZoneName())
+                    .rentAbleAmount(dtoTimeFilter.getRentAbleAmount())
                     .build());
+            }
         }
 
         return returnValue;
@@ -106,20 +106,20 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     public List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng) {
         List<BillitaZone> returnValue = new ArrayList<>();
 
-        List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
-        for (BillitaZone billitaZone : billitaZoneList) {
-            double theta = lat - billitaZone.getLatitude().doubleValue();
-            double dist = Math.sin(lat * Math.PI / 180.0)
-                * Math.sin(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                + Math.cos(lat * Math.PI / 180.0)
-                * Math.cos(billitaZone.getLatitude().doubleValue() * Math.PI / 180.0)
-                * Math.cos(theta * Math.PI / 180.0);
-            dist = Math.acos(dist);
-            dist = dist * 180 / Math.PI;
-            dist *= 60 * 1.1515 * 1609.344;
+        ResponseKakaoCoord2Address responseKakaoCoord2Address = kakaoOpenFeign.KakaoCoord2Address(
+            RequestKakaoCoord2Address.builder()
+                .x(String.valueOf(lng))
+                .y(String.valueOf(lat))
+                .build());
 
+        List<BillitaZone> billitaZoneList =
+            billitaZoneRepo.findAllByRegionName(
+                responseKakaoCoord2Address.getDocuments().get(0).getAddress().getRegion_1depth_name());
+
+        for (BillitaZone billitaZone : billitaZoneList) {
             // 10km
-            if (dist < 10000) {
+            if (isDistanceReachedLimit(
+                lat, lng, billitaZone.getLatitude().doubleValue(), billitaZone.getLongitude().doubleValue())) {
                 returnValue.add(billitaZone);
             }
         }
@@ -131,24 +131,35 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
         List<ResponseGetNowBillita> returnValue = new ArrayList<>();
 
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime twoHoursLater = currentTime.plusHours(2);
-        for (BillitaZone billitaZone : billitaZoneInLimitDistance(lat, lng)) {
-            for (Vehicle vehicle : vehicleRepo.findAllByLastZone(billitaZone)) {
-                if (bookListRepo.timeFilter(vehicle.getId(), currentTime, twoHoursLater)
-                    .isEmpty()) {
-                    returnValue.add(ResponseGetNowBillita.builder()
-                        .vehicleId(vehicle.getId())
-                        .billitaZoneId(vehicle.getLastZone().getId())
-                        .billitaZoneName(vehicle.getLastZone().getName())
-                        .carBrand(vehicle.getFrame().getCarBrand().getBrandName())
-                        .carName(vehicle.getFrame().getCarName())
-                        .carImage(vehicle.getFrame().getImage())
-                        .build());
-                }
-            }
+        List<ResponseGetNowBillitaList> vehicleList = billitaZoneRepo.billitaTimeFilterByDistance(lat, lng);
+        for (ResponseGetNowBillitaList responseGetNowBillitaList : vehicleList) {
+            returnValue.add(ResponseGetNowBillita.builder()
+                .vehicleId(responseGetNowBillitaList.getVehicleId())
+                .carName(responseGetNowBillitaList.getCarName())
+                .carImage(responseGetNowBillitaList.getCarImage())
+                .billitaZoneId(responseGetNowBillitaList.getBillitaZoneId())
+                .billitaZoneName(responseGetNowBillitaList.getBillitaZoneName())
+                .build());
         }
 
         return returnValue;
     }
+
+    @Override
+    public Boolean isDistanceReachedLimit(double lat1, double lng1, double lat2, double lng2) {
+        double theta = lat1 - lat2;
+        double dist = Math.sin(lat1 * Math.PI / 180.0)
+            * Math.sin(lat2 * Math.PI / 180.0)
+            + Math.cos(lat1 * Math.PI / 180.0)
+            * Math.cos(lat2 * Math.PI / 180.0)
+            * Math.cos(theta * Math.PI / 180.0);
+        dist = Math.acos(dist);
+        dist = dist * 180 / Math.PI;
+        dist *= 60 * 1.1515 * 1609.344;
+
+        // 10km
+        return dist < 10000;
+    }
+
+
 }

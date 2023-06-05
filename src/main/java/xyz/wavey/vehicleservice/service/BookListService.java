@@ -1,12 +1,11 @@
 package xyz.wavey.vehicleservice.service;
 
 import org.springframework.http.ResponseEntity;
-import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.vo.*;
 
 public interface BookListService {
 
-    BookList addBook(RequestBookList requestBookList);
+    ResponseAddBook addBook(RequestBookList requestBookList);
 
     ResponseBookList getBook(Long id);
 

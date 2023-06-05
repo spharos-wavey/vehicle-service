@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import xyz.wavey.vehicleservice.model.BillitaZone;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.model.BookList;
 import xyz.wavey.vehicleservice.model.License;
 import xyz.wavey.vehicleservice.model.Vehicle;
-import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
 import xyz.wavey.vehicleservice.repository.BookListRepo;
 import xyz.wavey.vehicleservice.repository.LicenseRepo;
 import xyz.wavey.vehicleservice.repository.VehicleRepo;
@@ -25,13 +24,13 @@ public class BookListServiceImpl implements BookListService {
 
     private final BookListRepo bookListRepo;
     private final VehicleRepo vehicleRepo;
-    private final BillitaZoneRepo billitaZoneRepo;
     private final LicenseRepo licenseRepo;
 
     private final DateTimeFormatter dateTimeFormatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
-    public BookList addBook(RequestBookList requestBookList) {
+    @Transactional(readOnly = false)
+    public ResponseAddBook addBook(RequestBookList requestBookList) {
         Vehicle vehicle = vehicleRepo.findById(requestBookList.getVehicleId()).orElseThrow(()
             -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
             NOT_FOUND_VEHICLE.getHttpStatus()));
@@ -45,11 +44,18 @@ public class BookListServiceImpl implements BookListService {
             throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
 
-        return bookListRepo.save(BookList.builder()
-            .startDate(startDate)
-            .endDate(endDate)
-            .vehicle(vehicle)
-            .build());
+        BookList bookList = bookListRepo.save(BookList.builder()
+                .startDate(startDate)
+                .endDate(endDate)
+                .vehicle(vehicle)
+                .build());
+
+        return ResponseAddBook.builder()
+                .bookId(bookList.getId())
+                .vehicleId(bookList.getVehicle().getId())
+                .startDate(bookList.getStartDate())
+                .endDate(bookList.getEndDate())
+                .build();
     }
 
     @Override
@@ -80,12 +86,8 @@ public class BookListServiceImpl implements BookListService {
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
             NOT_FOUND_BOOKLIST.getHttpStatus()));
 
-        BillitaZone billitaZone = billitaZoneRepo.findById(id).orElseThrow(()
-            -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
-            NOT_FOUND_BILLITAZONE.getHttpStatus()));
-
         return ResponseBookAboutVehicle.builder()
-            .rentId(bookList.getId())
+            .bookId(bookList.getId())
             .defaultPrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .distancePrice(bookList.getVehicle().getFrame().getDefaultPrice())
             .capacity(bookList.getVehicle().getFrame().getCapacity())
@@ -95,7 +97,7 @@ public class BookListServiceImpl implements BookListService {
             .imageUrl(bookList.getVehicle().getFrame().getImage())
             .startDate(bookList.getStartDate().format(dateTimeFormatterDate))
             .endDate(bookList.getEndDate().format(dateTimeFormatterDate))
-            .billitaZone(billitaZone.getName())
+            .billitaZone(bookList.getVehicle().getLastZone().getName())
             .build();
     }
 

@@ -39,10 +39,6 @@ public class QVehicle extends EntityPathBase<Vehicle> {
 
     public final QBillitaZone lastZone;
 
-    public final NumberPath<java.math.BigDecimal> latitude = createNumber("latitude", java.math.BigDecimal.class);
-
-    public final NumberPath<java.math.BigDecimal> longitude = createNumber("longitude", java.math.BigDecimal.class);
-
     public final NumberPath<Integer> mileage = createNumber("mileage", Integer.class);
 
     public final StringPath number = createString("number");

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.CarBrand;
 import xyz.wavey.vehicleservice.repository.CarBrandRepo;
@@ -24,6 +25,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     private final CarBrandRepo carBrandRepo;
 
     @Override
+    @Transactional(readOnly = false)
     public CarBrand addCarBrand(RequestCarBrand requestCarBrand) {
         return carBrandRepo.save(CarBrand.builder()
             .brandName(requestCarBrand.getBrandName())
@@ -32,6 +34,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseCarBrand getCarBrand(Integer id) {
         CarBrand carBrand = carBrandRepo.findById(id).orElseThrow(
             () -> new ServiceException(NOT_FOUND_MAKER.getMessage(),
@@ -43,6 +46,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseGetAllCarBrands> getAllBrands() {
         List<ResponseGetAllCarBrands> returnValue = new ArrayList<>();
 
@@ -57,6 +61,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Slice<DtoFindAllByFrameId> getAllVehicleByCarBrand(Integer id, double lat, double lng, Pageable pageable) {
         return carBrandRepo.findAllByFrameId(id, lat, lng, pageable);
     }

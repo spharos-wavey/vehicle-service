@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.*;
@@ -32,6 +33,7 @@ public class VehicleServiceImpl implements VehicleService {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
+    @Transactional(readOnly = false)
     public Vehicle addVehicle(RequestVehicle requestVehicle) {
         return vehicleRepo.save(Vehicle.builder()
             .feature(requestVehicle.getFeature())
@@ -51,6 +53,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseGetVehicle getVehicle(Long id) {
         Vehicle vehicle = vehicleRepo.findById(id)
             .orElseThrow(() -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
@@ -77,6 +80,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseGetVehicleInBillitaZone> getVehicleInBillitaZone(Long id, String sDate, String eDate) {
         List<ResponseGetVehicleInBillitaZone> returnValue = new ArrayList<>();
 
@@ -109,6 +113,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean timeFilter(Long id, String sDate, String eDate) {
         LocalDateTime startDate;
         LocalDateTime endDate;

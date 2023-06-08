@@ -3,6 +3,7 @@ package xyz.wavey.vehicleservice.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.BillitaZone;
 import xyz.wavey.vehicleservice.repository.BillitaZoneRepo;
@@ -23,6 +24,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     private final KakaoOpenFeign kakaoOpenFeign;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    @Transactional(readOnly = false)
     public BillitaZone addBillitaZone(RequestBillitaZone requestBillitaZone) {
         return billitaZoneRepo.save(BillitaZone.builder()
             .name(requestBillitaZone.getName())
@@ -32,6 +34,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
             .build());
     }
 
+    @Transactional(readOnly = true)
     public ResponseBillitaZone getBillitaZone(Long id) {
         BillitaZone billitaZone = billitaZoneRepo.findById(id)
             .orElseThrow(() -> new ServiceException(NOT_FOUND_BILLITAZONE.getMessage(),
@@ -45,6 +48,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseGetAllBillitaZone> getAllBillitaZone() {
         List<ResponseGetAllBillitaZone> returnValue = new ArrayList<>();
         List<BillitaZone> billitaZoneList = billitaZoneRepo.findAll();
@@ -61,6 +65,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseTimeFilter> timeFilter(String sDate, String eDate, String lat, String lng) {
 
         List<ResponseTimeFilter> returnValue = new ArrayList<>();
@@ -106,6 +111,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<BillitaZone> billitaZoneInLimitDistance(double lat, double lng) {
         List<BillitaZone> returnValue = new ArrayList<>();
 
@@ -131,6 +137,7 @@ public class BillitaZoneServiceImpl implements BillitaZoneService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResponseGetNowBillita> getNowBillita(double lat, double lng) {
         List<ResponseGetNowBillita> returnValue = new ArrayList<>();
 

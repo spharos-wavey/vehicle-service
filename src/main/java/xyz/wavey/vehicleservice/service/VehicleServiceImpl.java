@@ -123,6 +123,6 @@ public class VehicleServiceImpl implements VehicleService {
         } catch (Exception e) {
             throw new ServiceException(BAD_REQUEST_DATEFORMAT.getMessage(), BAD_REQUEST_DATEFORMAT.getHttpStatus());
         }
-        return !bookListRepo.existsByIdAndEndDateIsAfterAndStartDateIsBefore(id, startDate, endDate);
+        return !bookListRepo.existsByVehicleIdAndEndDateIsAfterAndStartDateIsBefore(id, startDate, endDate);
     }
 }

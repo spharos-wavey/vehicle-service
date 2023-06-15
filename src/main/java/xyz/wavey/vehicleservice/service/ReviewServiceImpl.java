@@ -5,6 +5,7 @@ import static xyz.wavey.vehicleservice.base.exception.ErrorCode.NOT_FOUND_VEHICL
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.wavey.vehicleservice.base.exception.ServiceException;
 import xyz.wavey.vehicleservice.model.Review;
 import xyz.wavey.vehicleservice.repository.ReviewRepo;
@@ -20,6 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final VehicleRepo vehicleRepo;
 
     @Override
+    @Transactional(readOnly = false)
     public Review addReview(RequestReview requestReview) {
         return  reviewRepo.save(Review.builder()
             .vehicle(vehicleRepo.findById(requestReview.getVehicleId())
@@ -33,6 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseReview getReview(Long id) {
         Review review = reviewRepo.findById(id)
             .orElseThrow(() -> new ServiceException(NOT_FOUND_REVIEW.getMessage(),

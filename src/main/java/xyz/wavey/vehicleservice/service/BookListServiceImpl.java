@@ -59,6 +59,7 @@ public class BookListServiceImpl implements BookListService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseBookList getBook(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
@@ -71,6 +72,7 @@ public class BookListServiceImpl implements BookListService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public ResponseEntity<Object> deleteBook(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
@@ -81,6 +83,7 @@ public class BookListServiceImpl implements BookListService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseBookAboutVehicle getBookAboutVehicle(Long id) {
         BookList bookList = bookListRepo.findById(id).orElseThrow(()
             -> new ServiceException(NOT_FOUND_BOOKLIST.getMessage(),
@@ -102,6 +105,7 @@ public class BookListServiceImpl implements BookListService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseSummary getSummary(Long vehicleId) {
         Vehicle vehicle = vehicleRepo.findById(vehicleId).orElseThrow(()
             -> new ServiceException(NOT_FOUND_VEHICLE.getMessage(),
@@ -115,6 +119,7 @@ public class BookListServiceImpl implements BookListService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkLicense(RequestCheckLicense requestCheckLicense) {
         if (!licenseRepo.existsByLicenseNumber(requestCheckLicense.getLicenseNumber())) {
             return false;
